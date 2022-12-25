@@ -23,14 +23,16 @@ export const DraggableTableRow = ({ row }: any) => {
       {isDragging ? (
         <td colSpan={row.cells.length}>&nbsp;</td>
       ) : (
-        row.cells.map((cell: any, i: any) =>
+        row.cells.map((cell: any, i: number) =>
           i === 0 ? (
-            <td {...cell.getCellProps()}>
+            <td {...cell.getCellProps()} key={i}>
               <DragHandle {...attributes} {...listeners} />
               <span>{cell.render("Cell")}</span>
             </td>
           ) : (
-            <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+            <td {...cell.getCellProps()} key={i}>
+              {cell.render("Cell")}
+            </td>
           )
         )
       )}

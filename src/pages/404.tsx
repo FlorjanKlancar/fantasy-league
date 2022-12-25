@@ -8,6 +8,11 @@ export default function NotFoundPage() {
     router.push("/");
   };
 
+  const contactSupport = () => {
+    // to do
+    return;
+  };
+
   return (
     <>
       <div className="min-h-full px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
@@ -37,7 +42,7 @@ export default function NotFoundPage() {
                 <Button
                   buttonSize="md"
                   buttonType="secondary"
-                  onClick={() => {}}
+                  onClick={() => contactSupport}
                 >
                   Contact Support
                 </Button>

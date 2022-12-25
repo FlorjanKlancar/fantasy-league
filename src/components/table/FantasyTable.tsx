@@ -86,16 +86,17 @@ export default function FantasyTable({ columns, data, setData }: Props) {
       collisionDetection={closestCenter}
       modifiers={[restrictToVerticalAxis]}
     >
-      <div className="border-primary/50 w-full overflow-x-auto rounded-md border-2">
+      <div className="w-full overflow-x-auto rounded-md border-2 border-primary/50">
         <table {...getTableProps()} className="table w-full">
           <thead>
-            {headerGroups.map((headerGroup) => (
+            {headerGroups.map((headerGroup, i: number) => (
               <tr
                 {...headerGroup.getHeaderGroupProps()}
                 className="text-center"
+                key={i}
               >
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
+                {headerGroup.headers.map((column, i: number) => (
+                  <th {...column.getHeaderProps()} key={i}>
                     {column.render("Header")}
                   </th>
                 ))}

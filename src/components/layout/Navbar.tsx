@@ -13,6 +13,11 @@ function Navbar() {
     return classes.filter(Boolean).join(" ");
   }
 
+  const createNewTournament = () => {
+    //to do
+    return;
+  };
+
   return (
     <Disclosure
       as="nav"
@@ -71,14 +76,14 @@ function Navbar() {
                       <Button
                         buttonSize="sm"
                         buttonType="secondary"
-                        onClick={() => {}}
+                        onClick={() => createNewTournament}
                       >
                         New tournament
                       </Button>
                     </div>
                     <button
                       type="button"
-                      className="bg-primary/80 flex-shrink-0 rounded-full p-1 text-white hover:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="flex-shrink-0 rounded-full bg-primary/80 p-1 text-white hover:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -86,7 +91,7 @@ function Navbar() {
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-4 flex-shrink-0">
                       <div>
-                        <Menu.Button className="bg-primary/80 flex rounded-full text-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        <Menu.Button className="flex rounded-full bg-primary/80 text-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-8 w-8 rounded-full"
@@ -107,7 +112,7 @@ function Navbar() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="border-primary/50 absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md border bg-slate-900 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md border border-primary/50 bg-slate-900 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <Menu.Item>
                             {({ active }) => (
                               <a
@@ -205,7 +210,7 @@ function Navbar() {
                     </div>
                     <button
                       type="button"
-                      className="bg-primary/80 ml-auto flex-shrink-0 rounded-full p-1 text-white hover:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="ml-auto flex-shrink-0 rounded-full bg-primary/80 p-1 text-white hover:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
