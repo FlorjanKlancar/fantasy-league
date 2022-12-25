@@ -1,0 +1,44 @@
+{
+  "teams": [
+    {
+      "team": "Astralis",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Astralis_logo.svg/1200px-Astralis_logo.svg.png"
+    },
+    {
+      "team": "Excel Esports",
+      "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f9/Excel_esports_logo.svg/1200px-Excel_esports_logo.svg.png"
+    },
+    {
+      "team": "Fnatic",
+      "logo": "https://cdn.sanity.io/images/5gii1snx/production/22ded60518ddaf71975d334849039189cb106e87-1000x1000.png"
+    },
+    {
+      "team": "G2 Esports",
+      "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Esports_organization_G2_Esports_logo.svg/1200px-Esports_organization_G2_Esports_logo.svg.png"
+    },
+    {
+      "team": "KOI",
+      "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Rogue_logo.svg/1200px-Rogue_logo.svg.png"
+    },
+    {
+      "team": "Mad Lions",
+      "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/84/MAD_Lions_logo.svg/1200px-MAD_Lions_logo.svg.png"
+    },
+    {
+      "team": "SK Gaming",
+      "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/4/4d/SK_Gaming_logo.svg/800px-SK_Gaming_logo.svg.png"
+    },
+    {
+      "team": "Team BDS",
+      "logo": "https://upload.wikimedia.org/wikipedia/fr/6/61/Team_BDS.png"
+    },
+    {
+      "team": "Team Heretics",
+      "logo": "https://w.namu.la/s/a22ac0e28b55d038264a70b87d01c4c87bcc55e3817234528d4ceb024044e67edb6c31261c0a9adbf9d8e8a5d1fbc07fda8c5a69fcd89e9219162923f7b50e3379ad376d674d8ea31b88d583213ed41f"
+    },
+    {
+      "team": "Team Vitality",
+      "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Team_vitality_logo.svg/1200px-Team_vitality_logo.svg.png"
+    }
+  ]
+}
