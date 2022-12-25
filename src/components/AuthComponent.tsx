@@ -1,7 +1,6 @@
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useState } from "react";
-import Button from "../components/Button";
 import Modal from "./Modal";
 
 export default function AuthComponent() {
@@ -29,13 +28,12 @@ export default function AuthComponent() {
               to become the ultimate champion!
             </p>
             <div className="mt-8 flex gap-x-4 sm:justify-center">
-              <Button
-                buttonSize="md"
-                buttonType="primary"
+              <button
+                className="btn-md btn bg-primary text-white hover:bg-primary/60"
                 onClick={() => setOpen(true)}
               >
                 Start Now!
-              </Button>
+              </button>
             </div>
           </div>
         </div>

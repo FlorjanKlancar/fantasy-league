@@ -1,4 +1,3 @@
-import Button from "../components/Button";
 import { useRouter } from "next/router";
 
 export default function NotFoundPage() {
@@ -6,11 +5,6 @@ export default function NotFoundPage() {
 
   const pushToHomepage = () => {
     router.push("/");
-  };
-
-  const contactSupport = () => {
-    // to do
-    return;
   };
 
   return (
@@ -31,21 +25,15 @@ export default function NotFoundPage() {
                 </p>
               </div>
               <div className="mt-10 flex space-x-3 sm:border-l sm:border-transparent sm:pl-6">
-                <Button
-                  buttonSize="md"
-                  buttonType="primary"
-                  onClick={pushToHomepage}
+                <button
+                  className="btn-md btn bg-primary text-white hover:bg-primary/60"
+                  onClick={() => pushToHomepage}
                 >
                   Go back home
-                </Button>
-
-                <Button
-                  buttonSize="md"
-                  buttonType="secondary"
-                  onClick={() => contactSupport}
-                >
+                </button>
+                <button className="btn-md btn bg-secondary text-white hover:bg-secondary/60">
                   Contact Support
-                </Button>
+                </button>
               </div>
             </div>
           </main>

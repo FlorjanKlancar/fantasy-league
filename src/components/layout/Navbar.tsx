@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../../components/Button";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -12,11 +11,6 @@ function Navbar() {
   function classNames(...classes: any) {
     return classes.filter(Boolean).join(" ");
   }
-
-  const createNewTournament = () => {
-    //to do
-    return;
-  };
 
   return (
     <Disclosure
@@ -73,13 +67,9 @@ function Navbar() {
                 {session && (
                   <>
                     <div className="mr-5">
-                      <Button
-                        buttonSize="sm"
-                        buttonType="secondary"
-                        onClick={() => createNewTournament}
-                      >
+                      <button className="btn-sm btn bg-secondary text-white hover:bg-secondary/60">
                         New tournament
-                      </Button>
+                      </button>
                     </div>
                     <button
                       type="button"
