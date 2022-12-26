@@ -36,7 +36,7 @@ function HomePage() {
           </thead>
           <tbody>
             {userTournaments?.map((tournament, i: number) => (
-              <tr>
+              <tr key={i}>
                 <td>{i + 1}</td>
                 <td>{tournament.tournaments?.name}</td>
                 <td>{dayjs(tournament.created_at).format("DD. MM. YYYY")}</td>

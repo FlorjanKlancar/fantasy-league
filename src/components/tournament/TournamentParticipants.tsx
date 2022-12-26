@@ -17,7 +17,7 @@ export default function TournamentParticipants({ tournamentId }: Props) {
       tournamentId: tournamentId,
     });
 
-  if (isLoading || !participantsData) return <div>"Loadgin"</div>;
+  if (isLoading || !participantsData) return <div>Loading</div>;
 
   return (
     <div className="overflow-hidden border-2 border-primary/50 bg-slate-800 sm:rounded-md">

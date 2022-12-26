@@ -16,7 +16,7 @@ export default function TournamentHeader({ tournamentId }: Props) {
     tournamentId: tournamentId,
   });
 
-  if (isLoading || !tournamentData) return <div>"Loadgin"</div>;
+  if (isLoading || !tournamentData) return <div>Loading</div>;
 
   return (
     <div className="my-6 border-b border-secondary pb-5">
