@@ -25,12 +25,12 @@ export const DraggableTableRow = ({ row }: any) => {
       ) : (
         row.cells.map((cell: any, i: number) =>
           i === 0 ? (
-            <td {...cell.getCellProps()} key={i}>
+            <td key={i} {...cell.getCellProps()}>
               <DragHandle {...attributes} {...listeners} />
               <span>{cell.render("Cell")}</span>
             </td>
           ) : (
-            <td {...cell.getCellProps()} key={i}>
+            <td key={i} {...cell.getCellProps()}>
               {cell.render("Cell")}
             </td>
           )

@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import Link from "next/link";
 
 function Navbar() {
   const session = useSession();
@@ -35,10 +36,9 @@ function Navbar() {
                   />
                 </div>
                 <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <a href="#" className="navbar_link_active">
+                  <Link href="/" className="navbar_link_active">
                     Dashboard
-                  </a>
+                  </Link>
                   <a href="#" className="navbar_link">
                     Team
                   </a>

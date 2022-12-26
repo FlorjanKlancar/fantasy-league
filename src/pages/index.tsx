@@ -1,68 +1,59 @@
-import Image from "next/image";
+import { useSession } from "@supabase/auth-helpers-react";
+import dayjs from "dayjs";
+import Link from "next/link";
 import React from "react";
-import FantasyTable from "../components/table/FantasyTable";
-import TournamentHeader from "../components/tournament/TournamentHeader";
-import TournamentParticipants from "../components/tournament/TournamentParticipants";
-import TournamentPrizes from "../components/tournament/TournamentPrizes";
-import { TableLECData } from "../types/TableTypes";
-import teams from "../utils/LEC.json";
+import { trpc } from "../utils/trpc";
 
 function HomePage() {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "",
-        accessor: "emptyColumn",
-      },
-      {
-        Header: "Standing",
-        accessor: "id",
-      },
+  const session = useSession();
+  const { data: userTournaments, isLoading } =
+    trpc.users.getTournamentsByUser.useQuery({
+      userId: session!.user.id,
+    });
 
-      {
-        Header: "Team",
-        accessor: "team",
-      },
-    ],
-    []
-  );
-
-  const prepareData = teams.teams.map((team: TableLECData, i: number) => {
-    return {
-      ...team,
-      id: i + 1,
-      team: (
-        <div className="flex justify-end space-x-4 ">
-          <div className="relative h-12 w-14">
-            <Image
-              src={team.logo}
-              alt={team.team}
-              fill
-              sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 50vw,
-              33vw"
-            />
-          </div>
-
-          <div className="flex w-36 items-center">
-            <span>{team.team}</span>
-          </div>
-        </div>
-      ),
-    };
-  });
-  const [data, setData] = React.useState(prepareData);
-
+  if (isLoading) return <div>loading</div>;
   return (
     <>
-      <TournamentHeader />
-      <div className="grid grid-cols-2 gap-[100px]">
-        <div className="flex flex-col  ">
-          <TournamentParticipants />
-          <TournamentPrizes />
+      <div className="my-6 border-b border-secondary pb-5">
+        <div className="sm:flex sm:items-baseline sm:justify-between">
+          <div className="sm:w-0 sm:flex-1">
+            <h1 className="text-4xl font-semibold">Your Tournaments</h1>
+          </div>
         </div>
-
-        <FantasyTable columns={columns} data={data} setData={setData} />
+      </div>
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Tournament Name</th>
+              <th>Created At</th>
+              <th>Tournament Status</th>
+              <th>Tournament Type</th>
+              <th>Your status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {userTournaments?.map((tournament, i: number) => (
+              <tr>
+                <td>{i + 1}</td>
+                <td>{tournament.tournaments?.name}</td>
+                <td>{dayjs(tournament.created_at).format("DD. MM. YYYY")}</td>
+                <td>{tournament.tournaments?.status}</td>
+                <td>{tournament.tournaments?.type}</td>
+                <td>{tournament.userStatus}</td>
+                <td>
+                  <Link href={`/tournament/${tournament.tournamentId}`}>
+                    <button className="btn-outline btn-secondary btn">
+                      Open
+                    </button>
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   );

@@ -22,11 +22,11 @@ import { TableColumns, TableLECData } from "../../types/TableTypes";
 
 type Props = {
   columns: TableColumns[];
-  data: any;
-  setData: (data: any) => void;
+  tableData: any;
 };
 
-export default function FantasyTable({ columns, data, setData }: Props) {
+export default function FantasyTable({ columns, tableData }: Props) {
+  const [data, setData] = useState(tableData);
   const [activeId, setActiveId] = useState<number | null>();
   const items = useMemo(() => data?.map(({ id }: any) => id), [data]);
   // Use the state and functions returned from useTable to build your UI

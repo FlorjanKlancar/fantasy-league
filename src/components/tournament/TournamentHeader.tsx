@@ -1,25 +1,36 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
+import { trpc } from "../../utils/trpc";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function TournamentHeader() {
+type Props = {
+  tournamentId: string;
+};
+
+export default function TournamentHeader({ tournamentId }: Props) {
+  const { data: tournamentData, isLoading } = trpc.tournament.getById.useQuery({
+    tournamentId: tournamentId,
+  });
+
+  if (isLoading || !tournamentData) return <div>"Loadgin"</div>;
+
   return (
-    <div className="border-b border-secondary pb-5 my-6">
+    <div className="my-6 border-b border-secondary pb-5">
       <div className="sm:flex sm:items-baseline sm:justify-between">
         <div className="sm:w-0 sm:flex-1">
-          <h1 className="font-semibold text-4xl">
-            Tournament - tournamentName
+          <h1 className="text-4xl font-semibold">
+            Tournament - {tournamentData.name}
           </h1>
-          <p className="mt-2 truncate text-sm">Tournament short description</p>
+          <p className="mt-2 truncate text-sm">{tournamentData.description}</p>
         </div>
 
         <div className="mt-4 flex items-center justify-between sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:justify-start">
-          <span className="inline-flex items-center rounded-full bg-green-700 px-3 py-0.5 text-sm font-medium text-white">
-            Open
+          <span className="inline-flex items-center rounded-full bg-green-700 px-3 py-0.5 text-sm font-medium uppercase text-white">
+            {tournamentData.status}
           </span>
           <Menu as="div" className="relative ml-3 inline-block text-left">
             <div>

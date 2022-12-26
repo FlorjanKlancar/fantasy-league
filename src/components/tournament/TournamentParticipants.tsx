@@ -4,81 +4,49 @@ import {
   EnvelopeIcon,
   ClockIcon,
 } from "@heroicons/react/20/solid";
+import { trpc } from "../../utils/trpc";
+import dayjs from "dayjs";
 
-const applications = [
-  {
-    applicant: {
-      name: "Ricardo Cooper",
-      email: "ricardo.cooper@example.com",
-      imageUrl:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    date: "2020-01-07",
-    dateFull: "January 7, 2020",
-    stage: "Locked in",
-    href: "#",
-  },
-  {
-    applicant: {
-      name: "Kristen Ramos",
-      email: "kristen.ramos@example.com",
-      imageUrl:
-        "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    date: "2020-01-07",
-    dateFull: "January 7, 2020",
-    stage: "Picking",
-    href: "#",
-  },
-  {
-    applicant: {
-      name: "Ted Fox",
-      email: "ted.fox@example.com",
-      imageUrl:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    date: "2020-01-07",
-    dateFull: "January 7, 2020",
-    stage: "Picking",
-    href: "#",
-  },
-  {
-    applicant: {
-      name: "Ted Fox",
-      email: "ted.fox@example.com",
-      imageUrl:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    date: "2020-01-07",
-    dateFull: "January 7, 2020",
-    stage: "Invited",
-    href: "#",
-  },
-];
+type Props = {
+  tournamentId: string;
+};
 
-export default function TournamentParticipants() {
+export default function TournamentParticipants({ tournamentId }: Props) {
+  const { data: participantsData, isLoading } =
+    trpc.users.getUsersOnTournament.useQuery({
+      tournamentId: tournamentId,
+    });
+
+  if (isLoading || !participantsData) return <div>"Loadgin"</div>;
+
   return (
-    <div className="overflow-hidden border-2 border-primary/50 bg-slate-800 shadow sm:rounded-md">
+    <div className="overflow-hidden border-2 border-primary/50 bg-slate-800 sm:rounded-md">
       <div className="bg-slate-900 p-4 text-sm font-bold	uppercase leading-4">
         <h2>Participants</h2>
       </div>
       <ul role="list" className="divide-y divide-slate-600">
-        {applications.map((application) => (
-          <li key={application.applicant.email}>
-            <a href={application.href} className="block hover:bg-slate-900/50">
+        {participantsData.map((participant, i: number) => (
+          <li key={i}>
+            <a className="block hover:bg-slate-900/50">
               <div className="flex items-center px-4 py-4 sm:px-6">
                 <div className="flex min-w-0 flex-1 items-center">
                   <div className="flex-shrink-0">
                     <img
                       className="h-12 w-12 rounded-full"
-                      src={application.applicant.imageUrl}
-                      alt=""
+                      src={
+                        participant.user_data?.avatar_url ??
+                        `https://avatars.dicebear.com/api/pixel-art/${participant.userId}.svg?background=%234f46e5`
+                      }
+                      alt={
+                        participant.user_data?.full_name ??
+                        "User profile picture"
+                      }
                     />
                   </div>
                   <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
                     <div>
                       <p className="truncate text-sm font-medium text-primary">
-                        {application.applicant.name}
+                        {participant.user_data?.full_name}
                       </p>
                       <p className="mt-2 flex items-center text-sm text-gray-500">
                         <EnvelopeIcon
@@ -86,7 +54,7 @@ export default function TournamentParticipants() {
                           aria-hidden="true"
                         />
                         <span className="truncate">
-                          {application.applicant.email}
+                          {participant.user_data?.full_name}
                         </span>
                       </p>
                     </div>
@@ -94,17 +62,21 @@ export default function TournamentParticipants() {
                       <div>
                         <p className="text-sm ">
                           Joined on{" "}
-                          <time dateTime={application.date}>
-                            {application.dateFull}
-                          </time>
+                          {participant.created_at && (
+                            <time>
+                              {dayjs(participant.created_at).format(
+                                "DD. MM. YYYY"
+                              )}
+                            </time>
+                          )}
                         </p>
                         <p className="mt-2 flex items-center text-sm text-gray-500">
-                          {application.stage === "Picking" ? (
+                          {participant.userStatus === "Picking" ? (
                             <ClockIcon
                               className="mr-1.5 h-5 w-5 flex-shrink-0 text-yellow-400"
                               aria-hidden="true"
                             />
-                          ) : application.stage === "Invited" ? (
+                          ) : participant.userStatus === "Invited" ? (
                             <EnvelopeIcon
                               className="mr-1.5 h-5 w-5 flex-shrink-0 text-secondary"
                               aria-hidden="true"
@@ -115,7 +87,7 @@ export default function TournamentParticipants() {
                               aria-hidden="true"
                             />
                           )}
-                          {application.stage}
+                          {participant.userStatus}
                         </p>
                       </div>
                     </div>

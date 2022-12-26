@@ -1,8 +1,12 @@
 import { router } from "../trpc";
-import { exampleRouter } from "./example";
+import { lecRouter } from "./lecRouter";
+import { tournamentRouter } from "./tournamentRouter";
+import { usersRouter } from "./users";
 
 export const appRouter = router({
-  example: exampleRouter,
+  tournament: tournamentRouter,
+  lec: lecRouter,
+  users: usersRouter,
 });
 
 // export type definition of API
