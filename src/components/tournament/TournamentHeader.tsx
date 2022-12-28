@@ -33,7 +33,7 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
     e.preventDefault();
 
     if (!session || !submitData) return;
-    console.log({ submitData });
+
     mutation.mutate({
       userId: session.user.id!,
       tournamentId: tournamentData.id,

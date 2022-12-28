@@ -58,17 +58,6 @@ export default function DragAndDropTable({ columns, data, setData }: Props) {
           return { ...item, id: i + 1 };
         });
       });
-
-      /*  setSubmitData((data: TableLECData[]) => {
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
-
-        const returnArray = arrayMove(data, oldIndex, newIndex);
-
-        return returnArray.map((item: any, i: number) => {
-          return { ...item, id: i + 1 };
-        });
-      }); */
     }
 
     setActiveId(null);

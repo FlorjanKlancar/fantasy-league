@@ -24,7 +24,6 @@ export const lecRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.log({ input });
       function toJson(data: unknown) {
         return JSON.stringify(data, (_, v) =>
           typeof v === "bigint" ? `${v}n` : v
@@ -37,7 +36,6 @@ export const lecRouter = router({
           prediction: toJson(input.predictions),
         },
       });
-      console.log({ response });
 
       return response;
     }),
