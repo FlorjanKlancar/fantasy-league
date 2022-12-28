@@ -237,23 +237,28 @@ model LEC_teams {
 }
 
 model user_data {
-  id                  String                @id(map: "users_pkey") @db.Uuid
-  full_name           String?
-  avatar_url          String?
-  users               users                 @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users_on_tournament users_on_tournament[]
+  id                    String                  @id(map: "users_pkey") @db.Uuid
+  full_name             String?
+  avatar_url            String?
+  email                 String?                 @db.VarChar
+  users                 users                   @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_LEC_predictions users_LEC_predictions[]
+  users_on_tournament   users_on_tournament[]
 
   @@schema("public")
 }
 
 model tournaments {
-  id                  String                @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  created_at          DateTime?             @default(now()) @db.Timestamptz(6)
-  name                String?               @db.VarChar
-  type                String?               @db.VarChar
-  description         String?               @db.VarChar
-  status              String?               @db.VarChar
-  users_on_tournament users_on_tournament[]
+  id                    String                  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at            DateTime?               @default(now()) @db.Timestamptz(6)
+  name                  String?                 @db.VarChar
+  description           String?                 @db.VarChar
+  status                String?                 @db.VarChar
+  lockInDate            DateTime                @db.Date
+  typeId                BigInt
+  tournament_types      tournament_types        @relation(fields: [typeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_LEC_predictions users_LEC_predictions[]
+  users_on_tournament   users_on_tournament[]
 
   @@schema("public")
 }
@@ -264,6 +269,28 @@ model users_on_tournament {
   userId       String      @db.Uuid
   tournamentId String      @db.Uuid
   userStatus   String      @db.VarChar
+  tournaments  tournaments @relation(fields: [tournamentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_data    user_data   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model tournament_types {
+  id          BigInt        @id @default(autoincrement())
+  created_at  DateTime      @default(now()) @db.Timestamptz(6)
+  type        String        @db.VarChar
+  logoImage   String        @db.VarChar
+  tournaments tournaments[]
+
+  @@schema("public")
+}
+
+model users_LEC_predictions {
+  id           BigInt      @id @default(autoincrement())
+  created_at   DateTime    @default(now()) @db.Timestamptz(6)
+  tournamentId String      @db.Uuid
+  userId       String      @db.Uuid
+  prediction   Json        @db.Json
   tournaments  tournaments @relation(fields: [tournamentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user_data    user_data   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 

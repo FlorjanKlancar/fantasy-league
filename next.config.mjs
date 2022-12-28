@@ -14,7 +14,14 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ["upload.wikimedia.org", "cdn.sanity.io", "w.namu.la"],
+    dangerouslyAllowSVG: true,
+    domains: [
+      "upload.wikimedia.org",
+      "cdn.sanity.io",
+      "w.namu.la",
+      "avatars.dicebear.com",
+      "lh3.googleusercontent.com",
+    ],
   },
 };
 export default config;

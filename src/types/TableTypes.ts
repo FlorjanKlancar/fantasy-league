@@ -4,7 +4,7 @@ export interface TableColumns {
 }
 
 export interface TableLECData {
-  id?: number;
-  team: string;
-  logo: string;
+  id: number;
+  teamId: number;
+  teamName: string;
 }

@@ -2,36 +2,81 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { trpc } from "../../utils/trpc";
+import TournamentStatusBadge from "./TournamentStatusBadge";
+import TournamentHeaderSkeleton from "../skeletons/TournamentHeaderSkeleton";
+import dayjs from "dayjs";
+import { dateFormat } from "../../utils/variables";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { useSession } from "@supabase/auth-helpers-react";
+import { TableLECData } from "../../types/TableTypes";
 
-function classNames(...classes: any) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 type Props = {
   tournamentId: string;
+  submitData: any;
 };
 
-export default function TournamentHeader({ tournamentId }: Props) {
+export default function TournamentHeader({ tournamentId, submitData }: Props) {
+  const session = useSession();
   const { data: tournamentData, isLoading } = trpc.tournament.getById.useQuery({
     tournamentId: tournamentId,
   });
 
-  if (isLoading || !tournamentData) return <div>Loading</div>;
+  const mutation = trpc.lec.submitLECTournamentPrediction.useMutation();
+
+  if (isLoading || !tournamentData) return <TournamentHeaderSkeleton />;
+
+  const submitHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!session || !submitData) return;
+    console.log({ submitData });
+    mutation.mutate({
+      userId: session.user.id!,
+      tournamentId: tournamentData.id,
+      predictions: submitData.map((team: TableLECData) => {
+        return { id: team.id, teamId: team.teamId, teamName: team.teamName };
+      }),
+    });
+  };
 
   return (
     <div className="my-6 border-b border-secondary pb-5">
       <div className="sm:flex sm:items-baseline sm:justify-between">
         <div className="sm:w-0 sm:flex-1">
-          <h1 className="text-4xl font-semibold">
-            Tournament - {tournamentData.name}
-          </h1>
+          <div className="flex items-center space-x-4">
+            <h1 className="text-4xl font-semibold">
+              Tournament - {tournamentData.name}
+            </h1>
+            <TournamentStatusBadge tournamentStatus={tournamentData.status!} />
+          </div>
+
           <p className="mt-2 truncate text-sm">{tournamentData.description}</p>
         </div>
 
+        <div>
+          <div className="flex flex-col ">
+            <form
+              className="flex items-center justify-end space-x-5 pt-3 pb-8"
+              onSubmit={(e) => submitHandler(e)}
+            >
+              <p className="text-xl">
+                Lock in closes on:{" "}
+                <span className="font-semibold underline decoration-secondary underline-offset-4">
+                  {dayjs(tournamentData.lockInDate).format(dateFormat)}
+                </span>
+              </p>
+              <button className="btn flex items-center bg-green-600 text-white hover:bg-green-700">
+                Lock in <CheckCircleIcon className="ml-1 h-6 w-6" />
+              </button>
+            </form>
+          </div>
+        </div>
+
         <div className="mt-4 flex items-center justify-between sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:justify-start">
-          <span className="inline-flex items-center rounded-full bg-green-700 px-3 py-0.5 text-sm font-medium uppercase text-white">
-            {tournamentData.status}
-          </span>
           <Menu as="div" className="relative ml-3 inline-block text-left">
             <div>
               <Menu.Button className="-my-2 flex items-center rounded-full bg-slate-800 p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">

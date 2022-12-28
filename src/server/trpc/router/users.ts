@@ -44,7 +44,9 @@ export const usersRouter = router({
             userId: input.userId,
           },
           include: {
-            tournaments: true,
+            tournaments: {
+              include: { tournament_types: true },
+            },
           },
         });
 

@@ -20,6 +20,13 @@ export const tournamentRouter = router({
           where: {
             id: input?.tournamentId,
           },
+          include: {
+            users_on_tournament: {
+              include: {
+                user_data: true,
+              },
+            },
+          },
         });
 
         return response;
@@ -27,4 +34,7 @@ export const tournamentRouter = router({
         (e: any) => console.error(e);
       }
     }),
+  getTournamentTypes: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.tournament_types.findMany();
+  }),
 });

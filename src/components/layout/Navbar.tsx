@@ -4,12 +4,13 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
+import UserAvatar from "../user/UserAvatar";
 
 function Navbar() {
   const session = useSession();
   const supabase = useSupabaseClient();
 
-  function classNames(...classes: any) {
+  function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
   }
 
@@ -83,13 +84,14 @@ function Navbar() {
                       <div>
                         <Menu.Button className="flex rounded-full bg-primary/80 text-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
-                          <img
-                            className="h-8 w-8 rounded-full"
-                            src={`https://avatars.dicebear.com/api/pixel-art/${session.user.email}.svg?background=%234f46e5`}
-                            alt={
-                              session.user.user_metadata.full_name ??
-                              session.user.email
+                          <UserAvatar
+                            imagePx={8}
+                            hasRingStyle={true}
+                            userProfileImg={
+                              session.user.user_metadata.avatar_url
                             }
+                            userFullName={session.user.user_metadata.full_name}
+                            userId={session.user.id}
                           />
                         </Menu.Button>
                       </div>

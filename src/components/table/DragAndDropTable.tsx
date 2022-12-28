@@ -22,11 +22,11 @@ import { TableColumns, TableLECData } from "../../types/TableTypes";
 
 type Props = {
   columns: TableColumns[];
-  tableData: any;
+  setData: (data: any) => void;
+  data: any;
 };
 
-export default function FantasyTable({ columns, tableData }: Props) {
-  const [data, setData] = useState(tableData);
+export default function DragAndDropTable({ columns, data, setData }: Props) {
   const [activeId, setActiveId] = useState<number | null>();
   const items = useMemo(() => data?.map(({ id }: any) => id), [data]);
   // Use the state and functions returned from useTable to build your UI
@@ -58,6 +58,17 @@ export default function FantasyTable({ columns, tableData }: Props) {
           return { ...item, id: i + 1 };
         });
       });
+
+      /*  setSubmitData((data: TableLECData[]) => {
+        const oldIndex = items.indexOf(active.id);
+        const newIndex = items.indexOf(over.id);
+
+        const returnArray = arrayMove(data, oldIndex, newIndex);
+
+        return returnArray.map((item: any, i: number) => {
+          return { ...item, id: i + 1 };
+        });
+      }); */
     }
 
     setActiveId(null);
@@ -86,7 +97,7 @@ export default function FantasyTable({ columns, tableData }: Props) {
       collisionDetection={closestCenter}
       modifiers={[restrictToVerticalAxis]}
     >
-      <div className="w-full overflow-x-auto rounded-md border-2 border-primary/50">
+      <div className="h-full w-full overflow-x-auto rounded-md border-2 border-primary/50">
         <table {...getTableProps()} className="table w-full">
           <thead>
             {headerGroups.map((headerGroup, i: number) => (

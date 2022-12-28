@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
@@ -43,7 +43,7 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
             </defs>
           </svg>
         </div>
-        <div className="min-h-[calc(100vh-2rem)] mx-auto max-w-7xl px-2 sm:px-4 lg:px-8 py-12">
+        <div className="mx-auto min-h-[calc(100vh-2rem)] max-w-7xl px-2 py-12 sm:px-4 lg:px-8">
           {children}
         </div>
         <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-40rem)]">

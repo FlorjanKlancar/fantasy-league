@@ -7,13 +7,21 @@
 }
 
 .navbar_link_active {
-  @apply border-primary inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-white;
+  @apply inline-flex items-center border-b-2 border-primary px-1 pt-1 text-sm font-medium text-white;
 }
 
 .navbar_mobile_link {
-  @apply hover:border-primary block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-slate-400 hover:text-slate-200;
+  @apply block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-slate-400 hover:border-primary hover:text-slate-200;
 }
 
 .navbar_mobile_link_active {
-  @apply border-primary block border-l-4 bg-slate-800 py-2 pl-3 pr-4 text-base font-medium text-white;
+  @apply block border-l-4 border-primary bg-slate-800 py-2 pl-3 pr-4 text-base font-medium text-white;
+}
+
+.text_link {
+  @apply flex cursor-pointer items-center space-x-1 font-semibold text-secondary underline-offset-4 hover:underline hover:decoration-2;
+}
+
+.skeleton_default_style {
+  @apply animate-pulse bg-slate-700;
 }

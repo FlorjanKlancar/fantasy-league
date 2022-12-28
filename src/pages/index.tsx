@@ -1,7 +1,14 @@
 import { useSession } from "@supabase/auth-helpers-react";
 import dayjs from "dayjs";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import YourTournamentsTableSkeleton from "../components/skeletons/YourTournamentsTableSkeleton";
+import ClassicTable from "../components/table/ClassicTable";
+import NoDataTable from "../components/table/NoDataTable";
+import TournamentStatusBadge from "../components/tournament/TournamentStatusBadge";
+import UserLabels from "../components/user/UserLabels";
+import UserPickStatus from "../components/user/UserPickStatus";
+
 import { trpc } from "../utils/trpc";
 
 function HomePage() {
@@ -11,7 +18,110 @@ function HomePage() {
       userId: session!.user.id,
     });
 
-  if (isLoading) return <div>loading</div>;
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Tournament Name",
+        accessor: "tournamentName", // accessor is the "key" in the data
+      },
+      {
+        Header: "Created At",
+        accessor: "createdAt",
+      },
+      {
+        Header: "Participants",
+        accessor: "tournamentParticipants",
+      },
+      {
+        Header: "Tournament Type",
+        accessor: "tournamentType",
+      },
+      {
+        Header: "Your status",
+        accessor: "yourStatus",
+      },
+      {
+        Header: "Tournament status",
+        accessor: "tournamentStatus",
+      },
+      {
+        Header: "",
+        accessor: "openButton",
+      },
+    ],
+    []
+  );
+
+  if (isLoading)
+    return (
+      <YourTournamentsTableSkeleton numberOfHeaders={5} numberOfRows={5} />
+    );
+
+  const checkTournamentStatus = (tournamentStatus: string) => {
+    let bgColor;
+    switch (tournamentStatus) {
+      case "open":
+        bgColor = "bg-green-500";
+        break;
+      case "closed":
+        bgColor = "bg-red-500";
+        break;
+      case "in progress":
+        bgColor = "bg-blue-500";
+        break;
+      default:
+        bgColor = "bg-primary";
+    }
+
+    return bgColor;
+  };
+
+  const tableData = userTournaments!.map((tournament) => {
+    return {
+      tournamentName: (
+        <div className="flex items-center space-x-3 lg:pl-2">
+          <div
+            className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${checkTournamentStatus(
+              tournament.tournaments.status!
+            )}`}
+          />
+          <div className="flex space-x-2 truncate">
+            <Link href={`/tournament/${tournament.tournamentId}`}>
+              <span className="text_link">{tournament.tournaments.name}</span>
+            </Link>
+          </div>
+        </div>
+      ),
+      createdAt: dayjs(tournament.created_at).format("DD. MM. YYYY"),
+      tournamentParticipants: (
+        <UserLabels tournamentId={tournament.tournamentId} />
+      ),
+      tournamentType: (
+        <div className="flex items-center text-base font-semibold">
+          <img
+            className="mr-2 h-10 w-10"
+            src={tournament.tournaments.tournament_types.logoImage}
+            alt={`${tournament.tournaments.tournament_types.type} Logo`}
+          />
+          <span>{tournament.tournaments.tournament_types.type}</span>
+        </div>
+      ),
+      yourStatus: <UserPickStatus userStatus={tournament.userStatus} />,
+      tournamentStatus: (
+        <div className="flex items-center justify-center">
+          <TournamentStatusBadge
+            tournamentStatus={tournament.tournaments.status!}
+          />
+        </div>
+      ),
+      openButton: (
+        <Link href={`/tournament/${tournament.tournamentId}`}>
+          <button className="text_link">View</button>
+        </Link>
+      ),
+    };
+  });
+
   return (
     <>
       <div className="my-6 border-b border-secondary pb-5">
@@ -21,40 +131,12 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Tournament Name</th>
-              <th>Created At</th>
-              <th>Tournament Status</th>
-              <th>Tournament Type</th>
-              <th>Your status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {userTournaments?.map((tournament, i: number) => (
-              <tr key={i}>
-                <td>{i + 1}</td>
-                <td>{tournament.tournaments?.name}</td>
-                <td>{dayjs(tournament.created_at).format("DD. MM. YYYY")}</td>
-                <td>{tournament.tournaments?.status}</td>
-                <td>{tournament.tournaments?.type}</td>
-                <td>{tournament.userStatus}</td>
-                <td>
-                  <Link href={`/tournament/${tournament.tournamentId}`}>
-                    <button className="btn-outline btn-secondary btn">
-                      Open
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+
+      {userTournaments?.length ? (
+        <ClassicTable columns={columns} data={tableData} />
+      ) : (
+        <NoDataTable />
+      )}
     </>
   );
 }
