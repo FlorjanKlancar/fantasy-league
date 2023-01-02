@@ -5,14 +5,21 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import UserAvatar from "../user/UserAvatar";
+import { useRouter } from "next/router";
 
 function Navbar() {
   const session = useSession();
   const supabase = useSupabaseClient();
+  const router = useRouter();
 
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
   }
+
+  const signOutHandler = () => {
+    router.push("/");
+    supabase.auth.signOut();
+  };
 
   return (
     <Disclosure
@@ -42,9 +49,6 @@ function Navbar() {
                   </Link>
                   <a href="#" className="navbar_link">
                     Team
-                  </a>
-                  <a href="#" className="navbar_link">
-                    Projects
                   </a>
                   <a href="#" className="navbar_link">
                     Calendar
@@ -139,7 +143,7 @@ function Navbar() {
                                   active ? "bg-slate-700" : "",
                                   "block px-4 py-2 text-sm"
                                 )}
-                                onClick={() => supabase.auth.signOut()}
+                                onClick={signOutHandler}
                               >
                                 Sign out
                               </a>
@@ -156,14 +160,11 @@ function Navbar() {
 
           <Disclosure.Panel className="lg:hidden">
             <div className="space-y-1 pt-2 pb-3">
-              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800" */}
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="navbar_mobile_link_active"
-              >
-                Dashboard
-              </Disclosure.Button>
+              <Link href="/">
+                <Disclosure.Button as="a" className="navbar_mobile_link_active">
+                  Dashboard
+                </Disclosure.Button>
+              </Link>
               <Disclosure.Button as="a" href="#" className="navbar_mobile_link">
                 Team
               </Disclosure.Button>
@@ -227,7 +228,7 @@ function Navbar() {
                       as="a"
                       href="#"
                       className="navbar_mobile_link"
-                      onClick={() => supabase.auth.signOut()}
+                      onClick={signOutHandler}
                     >
                       Sign out
                     </Disclosure.Button>

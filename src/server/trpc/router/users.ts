@@ -13,7 +13,7 @@ export const usersRouter = router({
       try {
         if (!input.tournamentId.length) return;
 
-        const response = ctx.prisma.users_on_tournament.findMany({
+        return ctx.prisma.users_on_tournament.findMany({
           where: {
             tournamentId: input.tournamentId,
           },
@@ -22,8 +22,6 @@ export const usersRouter = router({
             tournaments: true,
           },
         });
-
-        return response;
       } catch {
         (e: any) => console.error(e);
       }
@@ -35,11 +33,11 @@ export const usersRouter = router({
         userId: z.string(),
       })
     )
-    .query(({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       try {
         if (!input.userId.length) return;
 
-        const response = ctx.prisma.users_on_tournament.findMany({
+        const response = await ctx.prisma.users_on_tournament.findMany({
           where: {
             userId: input.userId,
           },
@@ -51,6 +49,28 @@ export const usersRouter = router({
         });
 
         return response;
+      } catch {
+        (e: any) => console.error(e);
+      }
+    }),
+
+  toggleUserPickStatus: publicProcedure
+    .input(
+      z.object({
+        userOnTournamentId: z.bigint(),
+        userStatus: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        return await ctx.prisma.users_on_tournament.update({
+          where: {
+            id: input.userOnTournamentId,
+          },
+          data: {
+            userStatus: input.userStatus,
+          },
+        });
       } catch {
         (e: any) => console.error(e);
       }

@@ -7,6 +7,7 @@ import TournamentPrizes from "../../../components/tournament/TournamentPrizes";
 
 function TournamentView() {
   const router = useRouter();
+
   const [submitData, setSubmitData] = useState<unknown>();
   const { tournamentId } = router.query;
 
@@ -19,14 +20,17 @@ function TournamentView() {
         submitData={submitData}
       />
 
-      <div className="grid grid-cols-2 gap-[100px]">
+      <div className="grid auto-rows-fr grid-cols-1 px-4 md:grid-cols-2 md:gap-[100px] md:px-0">
         <div className="flex flex-col">
           <TournamentParticipants tournamentId={tournamentId!.toString()} />
 
           <TournamentPrizes />
         </div>
 
-        <LECTable setSubmitData={setSubmitData} />
+        <LECTable
+          setSubmitData={setSubmitData}
+          tournamentId={tournamentId!.toString()}
+        />
       </div>
     </>
   );

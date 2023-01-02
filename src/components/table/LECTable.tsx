@@ -1,3 +1,5 @@
+import type { users_LEC_predictions } from "@prisma/client";
+import { useSession } from "@supabase/auth-helpers-react";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 import { trpc } from "../../utils/trpc";
@@ -6,10 +8,17 @@ import DragAndDropTable from "./DragAndDropTable";
 
 type Props = {
   setSubmitData: (data: unknown) => void;
+  tournamentId: string;
 };
 
-function LECTable({ setSubmitData }: Props) {
+function LECTable({ setSubmitData, tournamentId }: Props) {
+  const session = useSession();
   const { data: lecData, isLoading } = trpc.lec.getAll.useQuery();
+  const { data: userLecPrediction, isLoading: isLoadingPredictions } =
+    trpc.lec.getLECTournamentPredictionsForUser.useQuery({
+      userId: session?.user.id ?? "",
+      tournamentId: tournamentId?.toString() ?? "",
+    });
 
   const [data, setData] = useState<unknown>([]);
 
@@ -35,9 +44,21 @@ function LECTable({ setSubmitData }: Props) {
   useEffect(() => {
     if (!lecData) return;
 
+    let parsePredictions: users_LEC_predictions[] = [];
+    let findTeam: any;
+
     const tableData = lecData.map((team, i: number) => {
+      if (userLecPrediction) {
+        parsePredictions = JSON.parse(userLecPrediction.prediction as string);
+
+        findTeam = parsePredictions.find(
+          (prediction: users_LEC_predictions) =>
+            Number(team.id) === Number(prediction.teamId)
+        );
+      }
+
       return {
-        id: i + 1,
+        id: userLecPrediction ? findTeam.id : i + 1,
 
         team: (
           <div className="flex justify-end space-x-4 ">
@@ -62,8 +83,10 @@ function LECTable({ setSubmitData }: Props) {
       };
     });
 
-    setData(tableData);
-  }, []);
+    setData(
+      userLecPrediction ? tableData.sort((a, b) => a.id - b.id) : tableData
+    );
+  }, [lecData]);
 
   useEffect(() => {
     setSubmitData(data);
@@ -71,7 +94,14 @@ function LECTable({ setSubmitData }: Props) {
 
   if (isLoading || !lecData) return <LECTableSkeleton numberOfRows={11} />;
 
-  return <DragAndDropTable columns={columns} data={data} setData={setData} />;
+  return (
+    <DragAndDropTable
+      columns={columns}
+      data={data}
+      setData={setData}
+      tournamentId={tournamentId}
+    />
+  );
 }
 
 export default LECTable;

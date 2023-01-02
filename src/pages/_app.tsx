@@ -7,10 +7,10 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode, useState } from "react";
 import { trpc } from "../utils/trpc";
-
 import "../styles/globals.css";
 import AuthComponent from "../components/AuthComponent";
 import { DefaultLayout } from "../components/layout/DefaultLayout";
+import { Toaster } from "react-hot-toast";
 
 export type NextPageWithLayout<
   TProps = Record<string, unknown>,
@@ -35,6 +35,15 @@ function MyAppWithProvider({ Component, pageProps }: AppProps) {
     >
       <DefaultLayout>
         <MyApp Component={Component} pageProps={pageProps} />
+        <Toaster
+          toastOptions={{
+            className: "bg-slate-900",
+            style: {
+              color: "#e2e8f0",
+              backgroundColor: "#475569",
+            },
+          }}
+        />
       </DefaultLayout>
     </SessionContextProvider>
   );

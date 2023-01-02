@@ -253,7 +253,6 @@ model tournaments {
   created_at            DateTime?               @default(now()) @db.Timestamptz(6)
   name                  String?                 @db.VarChar
   description           String?                 @db.VarChar
-  status                String?                 @db.VarChar
   lockInDate            DateTime                @db.Date
   typeId                BigInt
   tournament_types      tournament_types        @relation(fields: [typeId], references: [id], onDelete: NoAction, onUpdate: NoAction)

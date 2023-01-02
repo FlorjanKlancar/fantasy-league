@@ -57,33 +57,16 @@ function HomePage() {
       <YourTournamentsTableSkeleton numberOfHeaders={5} numberOfRows={5} />
     );
 
-  const checkTournamentStatus = (tournamentStatus: string) => {
-    let bgColor;
-    switch (tournamentStatus) {
-      case "open":
-        bgColor = "bg-green-500";
-        break;
-      case "closed":
-        bgColor = "bg-red-500";
-        break;
-      case "in progress":
-        bgColor = "bg-blue-500";
-        break;
-      default:
-        bgColor = "bg-primary";
-    }
-
-    return bgColor;
-  };
-
   const tableData = userTournaments!.map((tournament) => {
     return {
       tournamentName: (
         <div className="flex items-center space-x-3 lg:pl-2">
           <div
-            className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${checkTournamentStatus(
-              tournament.tournaments.status!
-            )}`}
+            className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${
+              dayjs(tournament.tournaments.lockInDate) < dayjs()
+                ? "bg-slate-600"
+                : "bg-emerald-700"
+            }`}
           />
           <div className="flex space-x-2 truncate">
             <Link href={`/tournament/${tournament.tournamentId}`}>
@@ -110,7 +93,7 @@ function HomePage() {
       tournamentStatus: (
         <div className="flex items-center justify-center">
           <TournamentStatusBadge
-            tournamentStatus={tournament.tournaments.status!}
+            tournamentDate={tournament.tournaments.lockInDate}
           />
         </div>
       ),

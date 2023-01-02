@@ -1,5 +1,6 @@
 import React from "react";
-import { TableOptions, useTable } from "react-table";
+import type { TableOptions } from "react-table";
+import { useTable } from "react-table";
 
 function ClassicTable({ columns, data }: TableOptions<object>) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =

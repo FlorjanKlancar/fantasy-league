@@ -18,15 +18,21 @@ import {
 import { useTable } from "react-table";
 import { DraggableTableRow } from "./DraggableTableRow";
 import { StaticTableRow } from "./StaticTableRow";
-import { TableColumns, TableLECData } from "../../types/TableTypes";
+import type { TableColumns, TableLECData } from "../../types/TableTypes";
 
 type Props = {
   columns: TableColumns[];
   setData: (data: any) => void;
   data: any;
+  tournamentId: string;
 };
 
-export default function DragAndDropTable({ columns, data, setData }: Props) {
+export default function DragAndDropTable({
+  columns,
+  data,
+  setData,
+  tournamentId,
+}: Props) {
   const [activeId, setActiveId] = useState<number | null>();
   const items = useMemo(() => data?.map(({ id }: any) => id), [data]);
   // Use the state and functions returned from useTable to build your UI
@@ -86,7 +92,7 @@ export default function DragAndDropTable({ columns, data, setData }: Props) {
       collisionDetection={closestCenter}
       modifiers={[restrictToVerticalAxis]}
     >
-      <div className="h-full w-full overflow-x-auto rounded-md border-2 border-primary/50">
+      <div className="-mt-12 h-full w-full overflow-x-auto rounded-md md:mt-0">
         <table {...getTableProps()} className="table w-full">
           <thead>
             {headerGroups.map((headerGroup, i: number) => (
@@ -110,7 +116,13 @@ export default function DragAndDropTable({ columns, data, setData }: Props) {
             >
               {rows.map((row: any) => {
                 prepareRow(row);
-                return <DraggableTableRow key={row.original.id} row={row} />;
+                return (
+                  <DraggableTableRow
+                    key={row.original.id}
+                    row={row}
+                    tournamentId={tournamentId}
+                  />
+                );
               })}
             </SortableContext>
           </tbody>

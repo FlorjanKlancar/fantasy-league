@@ -1,15 +1,20 @@
-import { ChevronRightIcon, EnvelopeIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { trpc } from "../../utils/trpc";
 import dayjs from "dayjs";
 import UserAvatar from "../user/UserAvatar";
 import UserPickStatus from "../user/UserPickStatus";
 import TournamentParticipantsSkeleton from "../skeletons/TournamentParticipantsSkeleton";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import Modal from "../Modal";
 
 type Props = {
   tournamentId: string;
 };
 
 export default function TournamentParticipants({ tournamentId }: Props) {
+  const [openModal, setOpenModal] = useState(false);
+
   const { data: participantsData, isLoading } =
     trpc.users.getUsersOnTournament.useQuery({
       tournamentId: tournamentId,
@@ -20,8 +25,14 @@ export default function TournamentParticipants({ tournamentId }: Props) {
 
   return (
     <div className="overflow-hidden border-2 border-primary/50 bg-slate-800 sm:rounded-md">
-      <div className="bg-slate-900 p-4 text-sm font-bold	uppercase leading-4">
+      <div className="flex justify-between bg-slate-900 p-4 text-sm font-bold	uppercase leading-4">
         <h2>Participants</h2>
+        <p
+          className="flex cursor-pointer items-center hover:text-primary"
+          onClick={() => setOpenModal(true)}
+        >
+          Invite players <PlusIcon className="ml-1 h-4 w-4" />
+        </p>
       </div>
       <ul role="list" className="divide-y divide-slate-600">
         {participantsData.map((participant, i: number) => (
@@ -76,6 +87,10 @@ export default function TournamentParticipants({ tournamentId }: Props) {
           </li>
         ))}
       </ul>
+
+      <Modal open={openModal} setOpen={setOpenModal}>
+        hey
+      </Modal>
     </div>
   );
 }
