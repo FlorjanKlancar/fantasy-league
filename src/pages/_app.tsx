@@ -11,6 +11,7 @@ import "../styles/globals.css";
 import AuthComponent from "../components/AuthComponent";
 import { DefaultLayout } from "../components/layout/DefaultLayout";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react";
 
 export type NextPageWithLayout<
   TProps = Record<string, unknown>,
@@ -44,6 +45,7 @@ function MyAppWithProvider({ Component, pageProps }: AppProps) {
             },
           }}
         />
+        <Analytics />
       </DefaultLayout>
     </SessionContextProvider>
   );
