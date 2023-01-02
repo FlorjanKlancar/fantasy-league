@@ -2,6 +2,7 @@ import type { users_LEC_predictions } from "@prisma/client";
 import { useSession } from "@supabase/auth-helpers-react";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
+import { TableLECData } from "../../types/TableTypes";
 import { trpc } from "../../utils/trpc";
 import LECTableSkeleton from "../skeletons/LECTableSkeleton";
 import DragAndDropTable from "./DragAndDropTable";
@@ -44,7 +45,7 @@ function LECTable({ setSubmitData, tournamentId }: Props) {
   useEffect(() => {
     if (!lecData) return;
 
-    let parsePredictions: users_LEC_predictions[] = [];
+    let parsePredictions: TableLECData[] = [];
     let findTeam: any;
 
     const tableData = lecData.map((team, i: number) => {
@@ -52,7 +53,7 @@ function LECTable({ setSubmitData, tournamentId }: Props) {
         parsePredictions = JSON.parse(userLecPrediction.prediction as string);
 
         findTeam = parsePredictions.find(
-          (prediction: users_LEC_predictions) =>
+          (prediction: TableLECData) =>
             Number(team.id) === Number(prediction.teamId)
         );
       }
