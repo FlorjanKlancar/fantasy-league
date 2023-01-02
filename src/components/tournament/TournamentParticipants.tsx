@@ -7,12 +7,19 @@ import TournamentParticipantsSkeleton from "../skeletons/TournamentParticipantsS
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Modal from "../Modal";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useSession } from "@supabase/auth-helpers-react";
 
 type Props = {
   tournamentId: string;
 };
 
 export default function TournamentParticipants({ tournamentId }: Props) {
+  const router = useRouter();
+  const { userId } = router.query;
+  const session = useSession();
+
   const [openModal, setOpenModal] = useState(false);
 
   const { data: participantsData, isLoading } =
@@ -37,7 +44,18 @@ export default function TournamentParticipants({ tournamentId }: Props) {
       <ul role="list" className="divide-y divide-slate-600">
         {participantsData.map((participant, i: number) => (
           <li key={i}>
-            <a className="block hover:bg-slate-900/50">
+            <Link
+              href={
+                session?.user.id === participant.userId
+                  ? `/tournament/${tournamentId}`
+                  : `/tournament/${tournamentId}/${participant.userId}`
+              }
+              className={`block hover:bg-slate-900/50 ${
+                userId?.toString() === participant.userId
+                  ? "bg-slate-900/50"
+                  : ""
+              }`}
+            >
               <div className="flex items-center px-4 py-4 sm:px-6">
                 <div className="flex min-w-0 flex-1 items-center">
                   <div className="flex-shrink-0">
@@ -83,7 +101,7 @@ export default function TournamentParticipants({ tournamentId }: Props) {
                   />
                 </div>
               </div>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

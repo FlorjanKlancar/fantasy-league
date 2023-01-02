@@ -1,12 +1,17 @@
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
 
 export default function AuthComponent() {
   const [supabase] = useState(() => createBrowserSupabaseClient());
 
   const [open, setOpen] = useState(false);
+  const [location, setLocation] = useState("");
+
+  useEffect(() => {
+    setLocation(window.location.href);
+  }, []);
 
   return (
     <>
@@ -55,6 +60,7 @@ export default function AuthComponent() {
                 },
               },
             }}
+            redirectTo={location}
             theme="dark"
           />
         </Modal>

@@ -36,8 +36,6 @@ export const DraggableTableRow = ({ row, tournamentId }: any) => {
       (user) => user.userId === session?.user.id
     );
 
-    console.log(findUserOnTournament?.userStatus);
-
     if (
       findUserOnTournament?.userStatus === "Locked in" ||
       dayjs(tournamentData.lockInDate) < dayjs()

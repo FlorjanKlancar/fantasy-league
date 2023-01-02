@@ -18,7 +18,7 @@ function classNames(...classes: string[]) {
 
 type Props = {
   tournamentId: string;
-  submitData: any;
+  submitData?: any;
 };
 
 export default function TournamentHeader({ tournamentId, submitData }: Props) {
@@ -63,7 +63,7 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
 
     if (!session || !submitData || !userData) return;
 
-    const toastId = toast.loading("Saving...");
+    const toastId = toast.loading("Locking in...");
 
     await submitPredictionMutation.mutate(
       {
@@ -103,75 +103,80 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
           <p className="mt-2 truncate text-sm">{tournamentData.description}</p>
         </div>
 
-        <div className="mt-5 flex items-center justify-between space-x-5 sm:mt-0 sm:justify-end">
-          {dayjs(tournamentData.lockInDate) > dayjs() ? (
-            <>
-              <p className="text-base sm:text-xl">
-                Lock in closes on:{" "}
+        {submitData && (
+          <div className="mt-5 flex items-center justify-between space-x-5 sm:mt-0 sm:justify-end">
+            {dayjs(tournamentData.lockInDate) > dayjs() ? (
+              <>
+                <p className="text-base sm:text-xl">
+                  Lock in closes on:{" "}
+                  <span className="font-semibold underline decoration-secondary underline-offset-4">
+                    {dayjs(tournamentData.lockInDate).format(dateFormat)}
+                  </span>
+                </p>
+                <form className="" onSubmit={(e) => submitHandler(e)}>
+                  {userData?.userStatus === "Picking" ? (
+                    <button
+                      className="btn flex items-center bg-green-600 text-white hover:bg-green-700"
+                      onClick={async () => {
+                        await toggleUserStatus.mutate(
+                          {
+                            userOnTournamentId: userData.id,
+                            userStatus: "Locked in",
+                          },
+                          {
+                            onSuccess() {
+                              utils.users.getUsersOnTournament.invalidate();
+                              utils.tournament.getById.invalidate();
+                            },
+                            onError(e) {
+                              toast.error(e.message);
+                            },
+                          }
+                        );
+                      }}
+                    >
+                      Lock in <CheckCircleIcon className="ml-1 h-6 w-6" />
+                    </button>
+                  ) : (
+                    <button
+                      className="btn flex items-center bg-orange-600 text-white hover:bg-orange-700"
+                      type="button"
+                      onClick={async () => {
+                        const toastId = toast.loading("Unlocking...");
+                        await toggleUserStatus.mutate(
+                          {
+                            userOnTournamentId: userData.id,
+                            userStatus: "Picking",
+                          },
+                          {
+                            onSuccess() {
+                              toast.success("Teams unlocked!", { id: toastId });
+
+                              utils.users.getUsersOnTournament.invalidate();
+                              utils.tournament.getById.invalidate();
+                            },
+                            onError(e) {
+                              toast.error(e.message, { id: toastId });
+                            },
+                          }
+                        );
+                      }}
+                    >
+                      Unlock
+                    </button>
+                  )}
+                </form>
+              </>
+            ) : (
+              <p className="text-lg">
+                Tournament is in progress since:{" "}
                 <span className="font-semibold underline decoration-secondary underline-offset-4">
                   {dayjs(tournamentData.lockInDate).format(dateFormat)}
                 </span>
               </p>
-              <form className="" onSubmit={(e) => submitHandler(e)}>
-                {userData?.userStatus === "Picking" ? (
-                  <button
-                    className="btn flex items-center bg-green-600 text-white hover:bg-green-700"
-                    onClick={async () => {
-                      await toggleUserStatus.mutate(
-                        {
-                          userOnTournamentId: userData.id,
-                          userStatus: "Locked in",
-                        },
-                        {
-                          onSuccess() {
-                            utils.users.getUsersOnTournament.invalidate();
-                            utils.tournament.getById.invalidate();
-                          },
-                          onError(e) {
-                            toast.error(e.message);
-                          },
-                        }
-                      );
-                    }}
-                  >
-                    Lock in <CheckCircleIcon className="ml-1 h-6 w-6" />
-                  </button>
-                ) : (
-                  <button
-                    className="btn flex items-center bg-orange-600 text-white hover:bg-orange-700"
-                    type="button"
-                    onClick={async () => {
-                      await toggleUserStatus.mutate(
-                        {
-                          userOnTournamentId: userData.id,
-                          userStatus: "Picking",
-                        },
-                        {
-                          onSuccess() {
-                            utils.users.getUsersOnTournament.invalidate();
-                            utils.tournament.getById.invalidate();
-                          },
-                          onError(e) {
-                            toast.error(e.message);
-                          },
-                        }
-                      );
-                    }}
-                  >
-                    Unlock
-                  </button>
-                )}
-              </form>
-            </>
-          ) : (
-            <p className="text-lg">
-              Tournament is in progress since:{" "}
-              <span className="font-semibold underline decoration-secondary underline-offset-4">
-                {dayjs(tournamentData.lockInDate).format(dateFormat)}
-              </span>
-            </p>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         <div className="mt-4 hidden items-center justify-between sm:mt-0 sm:ml-6 sm:flex sm:flex-shrink-0 sm:justify-start">
           <Menu as="div" className="relative ml-3 inline-block text-left">

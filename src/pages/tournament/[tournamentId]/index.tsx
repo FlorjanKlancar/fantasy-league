@@ -1,3 +1,4 @@
+import { useSession } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import LECTable from "../../../components/table/LECTable";
@@ -7,11 +8,12 @@ import TournamentPrizes from "../../../components/tournament/TournamentPrizes";
 
 function TournamentView() {
   const router = useRouter();
+  const session = useSession();
 
   const [submitData, setSubmitData] = useState<unknown>();
   const { tournamentId } = router.query;
 
-  if (!tournamentId) return;
+  if (!tournamentId || !session) return;
 
   return (
     <>
@@ -28,6 +30,7 @@ function TournamentView() {
         </div>
 
         <LECTable
+          userId={session.user.id}
           setSubmitData={setSubmitData}
           tournamentId={tournamentId!.toString()}
         />

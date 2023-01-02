@@ -1,5 +1,3 @@
-import type { users_LEC_predictions } from "@prisma/client";
-import { useSession } from "@supabase/auth-helpers-react";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 import { TableLECData } from "../../types/TableTypes";
@@ -10,14 +8,14 @@ import DragAndDropTable from "./DragAndDropTable";
 type Props = {
   setSubmitData: (data: unknown) => void;
   tournamentId: string;
+  userId: string;
 };
 
-function LECTable({ setSubmitData, tournamentId }: Props) {
-  const session = useSession();
+function LECTable({ setSubmitData, tournamentId, userId }: Props) {
   const { data: lecData, isLoading } = trpc.lec.getAll.useQuery();
   const { data: userLecPrediction, isLoading: isLoadingPredictions } =
     trpc.lec.getLECTournamentPredictionsForUser.useQuery({
-      userId: session?.user.id ?? "",
+      userId: userId,
       tournamentId: tournamentId?.toString() ?? "",
     });
 
@@ -87,13 +85,14 @@ function LECTable({ setSubmitData, tournamentId }: Props) {
     setData(
       userLecPrediction ? tableData.sort((a, b) => a.id - b.id) : tableData
     );
-  }, [lecData]);
+  }, [lecData, userLecPrediction]);
 
   useEffect(() => {
     setSubmitData(data);
   }, [data]);
 
-  if (isLoading || !lecData) return <LECTableSkeleton numberOfRows={11} />;
+  if (isLoading || !lecData || isLoadingPredictions)
+    return <LECTableSkeleton numberOfRows={11} />;
 
   return (
     <DragAndDropTable
