@@ -6,7 +6,7 @@ import LECTableSkeleton from "../skeletons/LECTableSkeleton";
 import DragAndDropTable from "./DragAndDropTable";
 
 type Props = {
-  setSubmitData: (data: unknown) => void;
+  setSubmitData?: (data: unknown) => void;
   tournamentId: string;
   userId: string;
 };
@@ -88,7 +88,7 @@ function LECTable({ setSubmitData, tournamentId, userId }: Props) {
   }, [lecData, userLecPrediction]);
 
   useEffect(() => {
-    setSubmitData(data);
+    setSubmitData && setSubmitData(data);
   }, [data]);
 
   if (isLoading || !lecData || isLoadingPredictions)

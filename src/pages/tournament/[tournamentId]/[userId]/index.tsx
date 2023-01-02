@@ -5,9 +5,7 @@ import TournamentHeader from "../../../../components/tournament/TournamentHeader
 import TournamentParticipants from "../../../../components/tournament/TournamentParticipants";
 import TournamentPrizes from "../../../../components/tournament/TournamentPrizes";
 
-type Props = {};
-
-function SpecificUserPicks({}: Props) {
+function SpecificUserPicks() {
   const router = useRouter();
 
   const { tournamentId, userId } = router.query;
@@ -27,7 +25,6 @@ function SpecificUserPicks({}: Props) {
 
         <LECTable
           userId={userId.toString()}
-          setSubmitData={() => {}}
           tournamentId={tournamentId!.toString()}
         />
       </div>
