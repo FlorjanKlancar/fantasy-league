@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "@supabase/auth-helpers-react";
 import InviteUser from "../user/InviteUser";
+import { toast } from "react-hot-toast";
 
 type Props = {
   tournamentId: string;
@@ -30,6 +31,12 @@ export default function TournamentParticipants({ tournamentId }: Props) {
 
   if (isLoading || !participantsData)
     return <TournamentParticipantsSkeleton numberOfRows={3} />;
+
+  const copyToClipboardHandler = async () => {
+    toast.success("URL copied to clipboard");
+
+    setOpenModal(false);
+  };
 
   return (
     <div className="overflow-hidden border-2 border-primary/50 bg-slate-800 sm:rounded-md">
@@ -108,7 +115,10 @@ export default function TournamentParticipants({ tournamentId }: Props) {
       </ul>
 
       <Modal open={openModal} setOpen={setOpenModal}>
-        <InviteUser />
+        <InviteUser
+          copyToClipboardHandler={copyToClipboardHandler}
+          tournamentId={tournamentId}
+        />
       </Modal>
     </div>
   );

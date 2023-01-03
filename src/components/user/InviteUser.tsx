@@ -1,77 +1,39 @@
 import React, { useEffect, useState } from "react";
-import AsyncSelect from "react-select/async";
 import { ClipboardIcon } from "@heroicons/react/24/outline";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { toast } from "react-hot-toast";
-import { trpc } from "../../utils/trpc";
+import UserDropdown from "./UserDropdown";
+import { MultiValue } from "react-select/dist/declarations/src";
 
-const optionsDropdown = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
-
-type DropDownType = {
-  value: string;
-  label: string;
+type Props = {
+  copyToClipboardHandler: () => void;
+  tournamentId: string;
 };
 
-function InviteUser() {
+function InviteUser({ copyToClipboardHandler, tournamentId }: Props) {
   const [location, setLocation] = useState("");
-  const [searchOption, setSearchOption] = useState("");
-  const { data, isLoading } = trpc.users.getUserByName.useQuery({
-    username: searchOption,
-  });
+  const [inviteSelections, setInviteSelections] =
+    useState<MultiValue<{ label: string; value: string }>>();
 
   useEffect(() => {
     setLocation(window.location.href);
   }, []);
 
-  if (isLoading) return <div>Loading</div>;
+  const submitHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const fetchData = async (inputValue: string) => {
-    setSearchOption(inputValue);
-    new Promise((resolve) => {
-      if (isLoading) return;
-
-      resolve(data);
-    });
-
-    const dropdownData = data?.map((user) => {
-      return {
-        label: user.full_name ?? user.email,
-        value: user.full_name ?? user.email,
-      };
-    });
-
-    return dropdownData;
+    console.log({ inviteSelections });
+    //send invites
   };
 
-  /*   const promiseOptions = (inputValue: string) => {
-    new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(setSearchOption(inputValue));
-      }, 1000);
-    });
-
-    return data;
-  };
- */
-
-  console.log({ data });
   return (
-    <div className="z-50">
+    <form onSubmit={submitHandler}>
       <h2 className="my-3 text-sm	font-bold uppercase leading-4">
-        Invite players to this tournament
+        Invite players to this tournament - Disabled for now
       </h2>
 
-      <AsyncSelect
-        isMulti
-        cacheOptions
-        defaultOptions
-        /* loadOptions={fetchData} */
-        className="my-react-select-container"
-        classNamePrefix="my-react-select"
+      <UserDropdown
+        tournamentId={tournamentId}
+        setInviteSelections={setInviteSelections}
       />
 
       <div className="py-8">
@@ -86,11 +48,8 @@ function InviteUser() {
             className="input-bordered input w-full "
             readOnly
           />
-          <CopyToClipboard
-            text={`${location}`}
-            onCopy={() => toast.success("URL copied to clipboard")}
-          >
-            <button className="btn-outline btn-square btn">
+          <CopyToClipboard text={`${location}`} onCopy={copyToClipboardHandler}>
+            <button className="btn-outline btn-square btn" type="button">
               <ClipboardIcon className="h-5 w-5" />
             </button>
           </CopyToClipboard>
@@ -98,11 +57,11 @@ function InviteUser() {
       </div>
 
       <div>
-        <button className="btn-primary btn w-full" type="button">
+        <button className="btn-primary btn w-full" type="submit">
           Send invite
         </button>
       </div>
-    </div>
+    </form>
   );
 }
 

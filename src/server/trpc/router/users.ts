@@ -76,33 +76,11 @@ export const usersRouter = router({
       }
     }),
 
-  getUserByName: publicProcedure
-    .input(
-      z.object({
-        username: z.string(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      try {
-        if (!input.username.length) return;
-
-        console.log("input.username", input.username);
-
-        return await ctx.prisma.user_data.findMany({
-          where: {
-            OR: [
-              {
-                full_name: {
-                  contains: input.username,
-                  mode: "insensitive",
-                },
-              },
-              { email: { contains: input.username, mode: "insensitive" } },
-            ],
-          },
-        });
-      } catch {
-        (e: any) => console.error(e);
-      }
-    }),
+  getUserByName: publicProcedure.query(async ({ ctx }) => {
+    try {
+      return await ctx.prisma.user_data.findMany();
+    } catch {
+      (e: any) => console.error(e);
+    }
+  }),
 });
