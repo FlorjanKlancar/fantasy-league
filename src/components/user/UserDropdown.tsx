@@ -19,18 +19,19 @@ function UserDropdown({ setInviteSelections, tournamentId }: Props) {
   if (isLoading || !data || isLoad || !usersOnTournament)
     return <DropdownSkeleton />;
 
-  let invitableUsers = data.filter(function (user) {
-    return !usersOnTournament.some(function (tournamentUser) {
-      return user.id === tournamentUser.userId;
+  const notOnTournamentList = data
+    .filter(
+      (user) =>
+        !usersOnTournament.some((tournamentUser) => {
+          return user.id === tournamentUser.userId;
+        })
+    )
+    .map((user) => {
+      return {
+        label: user.full_name ?? user.email!,
+        value: user.id,
+      };
     });
-  });
-
-  const notOnTournamentList = invitableUsers.map((user) => {
-    return {
-      label: user.full_name ?? user.email!,
-      value: user.id,
-    };
-  });
 
   return (
     <Select
