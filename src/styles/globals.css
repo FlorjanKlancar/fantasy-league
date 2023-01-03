@@ -25,3 +25,7 @@
 .skeleton_default_style {
   @apply animate-pulse bg-slate-700;
 }
+
+.table_header_text {
+  @apply text-sm font-bold uppercase leading-4;
+}
