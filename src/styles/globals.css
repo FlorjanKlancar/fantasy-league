@@ -2,26 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-.navbar_link {
-  @apply inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-slate-400 hover:border-slate-200 hover:text-slate-200;
-}
+@layer components {
+  .navbar_link {
+    @apply inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-slate-400 hover:border-slate-200 hover:text-slate-200;
+  }
 
-.navbar_link_active {
-  @apply inline-flex items-center border-b-2 border-primary px-1 pt-1 text-sm font-medium text-white;
-}
+  .navbar_link_active {
+    @apply inline-flex items-center border-b-2 border-primary px-1 pt-1 text-sm font-medium text-white;
+  }
 
-.navbar_mobile_link {
-  @apply block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-slate-400 hover:border-primary hover:text-slate-200;
-}
+  .navbar_mobile_link {
+    @apply block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-slate-400 hover:border-primary hover:text-slate-200;
+  }
 
-.navbar_mobile_link_active {
-  @apply block border-l-4 border-primary bg-slate-800 py-2 pl-3 pr-4 text-base font-medium text-white;
-}
+  .navbar_mobile_link_active {
+    @apply block border-l-4 border-primary bg-slate-800 py-2 pl-3 pr-4 text-base font-medium text-white;
+  }
 
-.text_link {
-  @apply flex cursor-pointer items-center space-x-1 font-semibold text-secondary underline-offset-4 hover:underline hover:decoration-2;
-}
+  .text_link {
+    @apply flex cursor-pointer items-center space-x-1 font-semibold text-secondary underline-offset-4 hover:underline hover:decoration-2;
+  }
 
-.skeleton_default_style {
-  @apply animate-pulse bg-slate-700;
+  .skeleton_default_style {
+    @apply animate-pulse bg-slate-700;
+  }
+
+  /*React select */
+  /* .my-react-select-container {
+  } */
+  .my-react-select-container .my-react-select__control {
+    @apply border-2 border-slate-300 bg-white hover:border-slate-400 dark:border-slate-700 dark:bg-slate-700 dark:hover:border-slate-500;
+  }
+
+  .my-react-select-container .my-react-select__control--is-focused {
+    @apply border-slate-500 shadow-none hover:border-slate-500 dark:border-slate-400 dark:hover:border-slate-400;
+  }
+
+  .my-react-select-container .my-react-select__menu {
+    @apply border-2 border-slate-300 bg-slate-100 dark:border-slate-600 dark:bg-slate-700;
+  }
+
+  .my-react-select-container .my-react-select__option {
+    @apply bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-800;
+  }
+  /* .my-react-select-container .my-react-select__option--is-focused {
+    @apply bg-slate-200 dark:bg-slate-800;
+  } */
+
+  .my-react-select-container .my-react-select__indicator-separator {
+    @apply bg-slate-400;
+  }
+
+  .my-react-select-container .my-react-select__input-container,
+  .my-react-select-container .my-react-select__placeholder,
+  .my-react-select-container .my-react-select__single-value {
+    @apply text-slate-600 dark:text-slate-200;
+  }
+
+  /*END React select */
 }

@@ -10,6 +10,7 @@ import Modal from "../Modal";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "@supabase/auth-helpers-react";
+import InviteUser from "../user/InviteUser";
 
 type Props = {
   tournamentId: string;
@@ -107,7 +108,7 @@ export default function TournamentParticipants({ tournamentId }: Props) {
       </ul>
 
       <Modal open={openModal} setOpen={setOpenModal}>
-        hey
+        <InviteUser />
       </Modal>
     </div>
   );
