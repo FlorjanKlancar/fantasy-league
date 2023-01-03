@@ -12,7 +12,9 @@ type Props = {
 };
 
 function LECTable({ setSubmitData, tournamentId, userId }: Props) {
-  const { data: lecData, isLoading } = trpc.lec.getAll.useQuery();
+  const { data: lecData, isLoading } = trpc.lec.getAll.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
   const { data: userLecPrediction, isLoading: isLoadingPredictions } =
     trpc.lec.getLECTournamentPredictionsForUser.useQuery({
       userId: userId,

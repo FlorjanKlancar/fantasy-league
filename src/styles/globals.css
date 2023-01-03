@@ -61,3 +61,7 @@
 
   /*END React select */
 }
+
+.table_header_text {
+  @apply text-sm font-bold uppercase leading-4;
+}

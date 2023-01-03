@@ -83,4 +83,34 @@ export const usersRouter = router({
       (e: any) => console.error(e);
     }
   }),
+  userJoinsTournament: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        tournamentId: z.string(),
+        notificationId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.prisma.users_on_tournament.create({
+          data: {
+            userId: input.userId,
+            tournamentId: input.tournamentId,
+            userStatus: "Picking",
+          },
+        });
+        await ctx.prisma.user_notifications.update({
+          where: {
+            id: input.notificationId,
+          },
+          data: {
+            isNew: false,
+          },
+        });
+        return;
+      } catch {
+        (e: any) => console.error(e);
+      }
+    }),
 });
