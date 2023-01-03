@@ -79,6 +79,8 @@ function Notifications({ notifications, userTournaments, userId }: Props) {
 
           utils.users.getTournamentsByUser.invalidate();
           utils.notifications.getAllNotificationsForUser.invalidate();
+          utils.users.getUsersOnTournament.invalidate();
+          utils.tournament.getById.invalidate();
         },
         onError(e) {
           toast.error(e.message, { id: toastId });
@@ -97,93 +99,97 @@ function Notifications({ notifications, userTournaments, userId }: Props) {
         <Cog8ToothIcon className="h-5 w-5" />
       </div>
 
-      <ul className="-my-4 mt-5 divide-y divide-slate-600">
-        {notifications.map((notification) => (
-          <li key={notification.id} className="flex space-x-3 py-4">
-            <div className="flex-shrink-0">
-              <div className="relative h-8 w-8">
-                <Image
-                  src={
-                    notification
-                      .user_data_user_notifications_sentFromUserTouser_data
-                      .avatar_url!
-                  }
-                  fill
-                  className="rounded-full"
-                  alt={"Profile img"}
-                />
+      {notifications.length ? (
+        <ul className="-my-4 mt-5 divide-y divide-slate-600">
+          {notifications.map((notification) => (
+            <li key={notification.id} className="flex space-x-3 py-4">
+              <div className="flex-shrink-0">
+                <div className="relative h-8 w-8">
+                  <Image
+                    src={
+                      notification
+                        .user_data_user_notifications_sentFromUserTouser_data
+                        .avatar_url!
+                    }
+                    fill
+                    className="rounded-full"
+                    alt={"Profile img"}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm text-slate-400">
-                <span className="font-semibold capitalize text-secondary">
-                  {notification
-                    .user_data_user_notifications_sentFromUserTouser_data
-                    .full_name ??
-                    notification
+              <div className="min-w-0 flex-1">
+                <p className="text-sm text-slate-400">
+                  <span className="font-semibold capitalize text-secondary">
+                    {notification
                       .user_data_user_notifications_sentFromUserTouser_data
-                      .email}
-                </span>{" "}
-                is inviting you to tournament{" "}
-                <span className="font-semibold text-slate-200">
-                  {notification.tournaments?.name}
-                </span>
-              </p>
+                      .full_name ??
+                      notification
+                        .user_data_user_notifications_sentFromUserTouser_data
+                        .email}
+                  </span>{" "}
+                  is inviting you to tournament{" "}
+                  <span className="font-semibold text-slate-200">
+                    {notification.tournaments?.name}
+                  </span>
+                </p>
 
-              <p className="my-0.5 text-xs text-slate-400">
-                {dayjs(notification.created_at).fromNow()}
-              </p>
+                <p className="my-0.5 text-xs text-slate-400">
+                  {dayjs(notification.created_at).fromNow()}
+                </p>
 
-              <div className="mt-2 flex">
-                <span className="inline-flex items-center text-sm">
-                  {checkIfUserParticipatesInTournament(
-                    notification.tournamentId!
-                  ) ? (
-                    <div className="flex space-x-2">
-                      <Link href={`/tournament/${notification.tournamentId}`}>
-                        <p className="text_link">You already joined</p>
-                      </Link>
-                    </div>
-                  ) : (
-                    <div className="flex space-x-2">
-                      <button
-                        type="button"
-                        className="btn-xs btn inline-flex space-x-2 bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-800"
-                        onClick={() =>
-                          acceptInvitation(
-                            notification.tournamentId!,
-                            notification.id
-                          )
-                        }
-                      >
-                        <CheckCircleIcon
-                          className="h-5 w-5 text-slate-200"
-                          aria-hidden="true"
-                        />
-                        <span className="font-medium text-slate-200">
-                          Accept
-                        </span>
-                      </button>
-                      <button
-                        type="button"
-                        className="btn-outline btn-xs btn inline-flex space-x-2 border-slate-700 hover:bg-slate-800"
-                      >
-                        <XCircleIcon
-                          className="h-5 w-5 text-slate-200"
-                          aria-hidden="true"
-                        />
-                        <span className="font-medium text-slate-200">
-                          Decline
-                        </span>
-                      </button>
-                    </div>
-                  )}
-                </span>
+                <div className="mt-2 flex">
+                  <span className="inline-flex items-center text-sm">
+                    {checkIfUserParticipatesInTournament(
+                      notification.tournamentId!
+                    ) ? (
+                      <div className="flex space-x-2">
+                        <Link href={`/tournament/${notification.tournamentId}`}>
+                          <p className="text_link">You already joined</p>
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className="flex space-x-2">
+                        <button
+                          type="button"
+                          className="btn-xs btn inline-flex space-x-2 bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-800"
+                          onClick={() =>
+                            acceptInvitation(
+                              notification.tournamentId!,
+                              notification.id
+                            )
+                          }
+                        >
+                          <CheckCircleIcon
+                            className="h-5 w-5 text-slate-200"
+                            aria-hidden="true"
+                          />
+                          <span className="font-medium text-slate-200">
+                            Accept
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-outline btn-xs btn inline-flex space-x-2 border-slate-700 hover:bg-slate-800"
+                        >
+                          <XCircleIcon
+                            className="h-5 w-5 text-slate-200"
+                            aria-hidden="true"
+                          />
+                          <span className="font-medium text-slate-200">
+                            Decline
+                          </span>
+                        </button>
+                      </div>
+                    )}
+                  </span>
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="my-4 text-center">No invites yet</div>
+      )}
       <div className="mt-6">
         <Link href="/notifications">
           <button type="button" className="btn-primary btn-sm btn w-full">

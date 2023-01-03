@@ -3,16 +3,27 @@ import { ClipboardIcon } from "@heroicons/react/24/outline";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import UserDropdown from "./UserDropdown";
 import { MultiValue } from "react-select/dist/declarations/src";
+import { trpc } from "../../utils/trpc";
+import { toast } from "react-hot-toast";
 
 type Props = {
   copyToClipboardHandler: () => void;
   tournamentId: string;
+  userId: string;
+  setOpenModal: (open: boolean) => void;
 };
 
-function InviteUser({ copyToClipboardHandler, tournamentId }: Props) {
+function InviteUser({
+  copyToClipboardHandler,
+  tournamentId,
+  userId,
+  setOpenModal,
+}: Props) {
   const [location, setLocation] = useState("");
   const [inviteSelections, setInviteSelections] =
     useState<MultiValue<{ label: string; value: string }>>();
+
+  const sendInviteMutation = trpc.users.sendInviteToUsers.useMutation();
 
   useEffect(() => {
     setLocation(window.location.href);
@@ -21,8 +32,26 @@ function InviteUser({ copyToClipboardHandler, tournamentId }: Props) {
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log({ inviteSelections });
-    //send invites
+    if (!inviteSelections) return;
+
+    const toastId = toast.loading("Sending...");
+
+    await sendInviteMutation.mutate(
+      {
+        users: inviteSelections.map((user) => user.value),
+        tournamentId,
+        sentFromUser: userId,
+      },
+      {
+        onSuccess() {
+          toast.success("Invites sent successfully!", { id: toastId });
+          setOpenModal(false);
+        },
+        onError(e) {
+          toast.error(e.message, { id: toastId });
+        },
+      }
+    );
   };
 
   return (

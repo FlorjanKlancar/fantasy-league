@@ -113,4 +113,30 @@ export const usersRouter = router({
         (e: any) => console.error(e);
       }
     }),
+
+  sendInviteToUsers: publicProcedure
+    .input(
+      z.object({
+        users: z.string().array(),
+        tournamentId: z.string(),
+        sentFromUser: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        return await ctx.prisma.user_notifications.createMany({
+          data: input.users.map((user) => {
+            return {
+              type: "Invite",
+              sentFromUser: input.sentFromUser,
+              sentToUser: user,
+              tournamentId: input.tournamentId,
+              isNew: true,
+            };
+          }),
+        });
+      } catch {
+        (e: any) => console.error(e);
+      }
+    }),
 });
