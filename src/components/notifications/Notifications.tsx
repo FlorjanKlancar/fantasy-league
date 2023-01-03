@@ -28,8 +28,7 @@ declare module "dayjs" {
     to(compared: DateType, withoutSuffix?: boolean): string;
   }
 }
-
-var relativeTime = require("dayjs/plugin/relativeTime");
+import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 type Props = {

@@ -76,6 +76,13 @@ export const usersRouter = router({
       }
     }),
 
+  getUserByName: publicProcedure.query(async ({ ctx }) => {
+    try {
+      return await ctx.prisma.user_data.findMany();
+    } catch {
+      (e: any) => console.error(e);
+    }
+  }),
   userJoinsTournament: publicProcedure
     .input(
       z.object({
