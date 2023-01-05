@@ -14,7 +14,7 @@ const HandleWrapper = styled.div`
 export const DragHandle = (props: any) => {
   return (
     <HandleWrapper {...props}>
-      <ChevronUpDownIcon className="w-8 h-8" />
+      <ChevronUpDownIcon className="h-8 w-8" {...props} />
     </HandleWrapper>
   );
 };

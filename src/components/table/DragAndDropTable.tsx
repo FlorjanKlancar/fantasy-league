@@ -25,6 +25,7 @@ type Props = {
   setData: (data: any) => void;
   data: any;
   tournamentId: string;
+  isUserLockedIn: boolean;
 };
 
 export default function DragAndDropTable({
@@ -32,6 +33,7 @@ export default function DragAndDropTable({
   data,
   setData,
   tournamentId,
+  isUserLockedIn,
 }: Props) {
   const [activeId, setActiveId] = useState<number | null>();
   const items = useMemo(() => data?.map(({ id }: any) => id), [data]);
@@ -92,8 +94,12 @@ export default function DragAndDropTable({
       collisionDetection={closestCenter}
       modifiers={[restrictToVerticalAxis]}
     >
-      <div className="-mt-12 h-full w-full overflow-x-auto rounded-md md:mt-0">
-        <table {...getTableProps()} className="table w-full">
+      <div
+        className={`h-full w-full overflow-x-auto rounded border-2 border-primary/20 sm:rounded-md md:mt-0 ${
+          isUserLockedIn ? "bg-slate-900" : "bg-slate-800"
+        }`}
+      >
+        <table {...getTableProps()} className="table h-full w-full">
           <thead>
             {headerGroups.map((headerGroup, i: number) => (
               <tr
@@ -102,14 +108,21 @@ export default function DragAndDropTable({
                 key={i}
               >
                 {headerGroup.headers.map((column, i: number) => (
-                  <th {...column.getHeaderProps()} key={i}>
+                  <th
+                    {...column.getHeaderProps()}
+                    key={i}
+                    className="!important static rounded-none	"
+                  >
                     {column.render("Header")}
                   </th>
                 ))}
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()} className="text-center text-xl">
+          <tbody
+            {...getTableBodyProps()}
+            className="text-center text-base md:text-xl"
+          >
             <SortableContext
               items={items}
               strategy={verticalListSortingStrategy}

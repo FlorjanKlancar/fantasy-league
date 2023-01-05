@@ -7,7 +7,7 @@ type Props = {
 function LECTableSkeleton({ numberOfRows }: Props) {
   return (
     <div className="w-full rounded-md">
-      <table className="table w-full">
+      <table className="table h-full w-full">
         <thead>
           <tr className="text-center">
             <th></th>

@@ -31,5 +31,26 @@ export const notificationsRouter = router({
       }
     }),
 
-  //markReadNotification
+  markAllAsRead: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        if (!input.userId.length) return;
+
+        return await ctx.prisma.user_notifications.updateMany({
+          where: {
+            sentToUser: input.userId,
+          },
+          data: {
+            isNew: false,
+          },
+        });
+      } catch {
+        (e: any) => console.error(e);
+      }
+    }),
 });

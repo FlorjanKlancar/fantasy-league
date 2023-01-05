@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 import { TableLECData } from "../../types/TableTypes";
@@ -62,8 +63,8 @@ function LECTable({ setSubmitData, tournamentId, userId }: Props) {
         id: userLecPrediction ? findTeam.id : i + 1,
 
         team: (
-          <div className="flex justify-end space-x-4 ">
-            <div className="relative h-12 w-14">
+          <div className="flex justify-center space-x-4 lg:justify-end">
+            <div className="relative h-8 w-10 md:h-12 md:w-14">
               <Image
                 src={team.logo}
                 alt={team.name}
@@ -74,7 +75,7 @@ function LECTable({ setSubmitData, tournamentId, userId }: Props) {
               />
             </div>
 
-            <div className="flex w-36 items-center">
+            <div className="flex w-12 items-center md:w-36 ">
               <span>{team.name}</span>
             </div>
           </div>
@@ -93,16 +94,45 @@ function LECTable({ setSubmitData, tournamentId, userId }: Props) {
     setSubmitData && setSubmitData(data);
   }, [data]);
 
-  if (isLoading || !lecData || isLoadingPredictions)
+  const { data: tournamentData, isLoading: loadingTournamentData } =
+    trpc.tournament.getById.useQuery({
+      tournamentId: tournamentId,
+    });
+
+  if (
+    isLoading ||
+    !lecData ||
+    isLoadingPredictions ||
+    loadingTournamentData ||
+    !tournamentData
+  )
     return <LECTableSkeleton numberOfRows={11} />;
 
+  const isUserLockedIn = () => {
+    const findUserOnTournament = tournamentData.users_on_tournament.find(
+      (user) => user.userId === userId
+    );
+
+    if (
+      findUserOnTournament?.userStatus === "Locked in" ||
+      dayjs(tournamentData.lockInDate) < dayjs()
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
-    <DragAndDropTable
-      columns={columns}
-      data={data}
-      setData={setData}
-      tournamentId={tournamentId}
-    />
+    <div className="mt-12 md:mt-0">
+      <DragAndDropTable
+        columns={columns}
+        data={data}
+        setData={setData}
+        tournamentId={tournamentId}
+        isUserLockedIn={isUserLockedIn()}
+      />
+    </div>
   );
 }
 

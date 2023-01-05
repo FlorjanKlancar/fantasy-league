@@ -2,6 +2,7 @@ import {
   Cog8ToothIcon,
   CheckCircleIcon,
   XCircleIcon,
+  EnvelopeOpenIcon,
 } from "@heroicons/react/24/outline";
 import {
   tournaments,
@@ -49,6 +50,8 @@ function Notifications({ notifications, userTournaments, userId }: Props) {
   const router = useRouter();
 
   const joinUserMutation = trpc.users.userJoinsTournament.useMutation();
+  const markAllNotificationsAsRead =
+    trpc.notifications.markAllAsRead.useMutation();
 
   const checkIfUserParticipatesInTournament = (tournamentId: string) => {
     const findTournament = userTournaments.find(
@@ -91,12 +94,34 @@ function Notifications({ notifications, userTournaments, userId }: Props) {
     router.push(`/tournament/${tournamentId}`);
   };
 
+  const markAllAsReadHandler = async () => {
+    await markAllNotificationsAsRead.mutate(
+      {
+        userId,
+      },
+      {
+        onSuccess() {
+          utils.notifications.getAllNotificationsForUser.invalidate();
+        },
+        onError(e) {
+          toast.error(e.message);
+        },
+      }
+    );
+  };
+
   return (
     <div className="py-2 px-3">
-      <div className="flex items-center justify-between">
-        <h1 className="table_header_text ">Notifications</h1>
+      <div className="flex items-center justify-between px-2 py-1">
+        <h1 className="table_header_text">Notifications</h1>
 
-        <Cog8ToothIcon className="h-5 w-5" />
+        <button
+          className="tooltip tooltip-bottom cursor-pointer hover:text-secondary"
+          data-tip="Mark all as read"
+          onClick={markAllAsReadHandler}
+        >
+          <EnvelopeOpenIcon className="h-5 w-5" />
+        </button>
       </div>
 
       {notifications.length ? (
