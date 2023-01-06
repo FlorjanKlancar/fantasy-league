@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
+import { toast } from "react-hot-toast";
 import { TableLECData } from "../../types/TableTypes";
 import { trpc } from "../../utils/trpc";
 import LECTableSkeleton from "../skeletons/LECTableSkeleton";
@@ -13,14 +15,24 @@ type Props = {
 };
 
 function LECTable({ setSubmitData, tournamentId, userId }: Props) {
+  const router = useRouter();
+
   const { data: lecData, isLoading } = trpc.lec.getAll.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
   const { data: userLecPrediction, isLoading: isLoadingPredictions } =
-    trpc.lec.getLECTournamentPredictionsForUser.useQuery({
-      userId: userId,
-      tournamentId: tournamentId?.toString() ?? "",
-    });
+    trpc.lec.getLECTournamentPredictionsForUser.useQuery(
+      {
+        userId,
+        tournamentId,
+      },
+      {
+        onError(err) {
+          toast.error(err.message);
+          router.push(`/tournament/${tournamentId}`);
+        },
+      }
+    );
 
   const [data, setData] = useState<unknown>([]);
 

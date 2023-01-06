@@ -27,7 +27,7 @@ export const notificationsRouter = router({
           take: 4,
         });
       } catch {
-        (e: any) => console.error(e);
+        (e: unknown) => console.error(e);
       }
     }),
 
@@ -50,7 +50,7 @@ export const notificationsRouter = router({
           },
         });
       } catch {
-        (e: any) => console.error(e);
+        (e: unknown) => console.error(e);
       }
     }),
 });

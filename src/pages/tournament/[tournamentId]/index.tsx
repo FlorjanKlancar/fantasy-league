@@ -1,34 +1,39 @@
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useSession } from "@supabase/auth-helpers-react";
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+import { GetServerSidePropsContext } from "next";
 import React, { useState } from "react";
 import LECTable from "../../../components/table/LECTable";
 import TournamentHeader from "../../../components/tournament/TournamentHeader";
 import TournamentParticipants from "../../../components/tournament/TournamentParticipants";
 import TournamentPrizes from "../../../components/tournament/TournamentPrizes";
-import { supabase } from "../../../utils/supabase";
-import { trpc } from "../../../utils/trpc";
+import { createProxySSGHelpers } from "@trpc/react-query/ssg";
+import superjson from "superjson";
+import { appRouter } from "../../../server/trpc/router/_app";
+import { createContext } from "../../../server/trpc/context";
+import { Session } from "@supabase/gotrue-js/src/lib/types";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { tournaments, users_on_tournament, user_data } from "@prisma/client";
 
-function TournamentView() {
-  const router = useRouter();
-  const session = useSession();
+type Props = {
+  session: Session;
+  tournamentData: tournaments & {
+    users_on_tournament: (users_on_tournament & {
+      user_data: user_data;
+    })[];
+  };
+};
 
+function TournamentView({ session, tournamentData }: Props) {
   const [submitData, setSubmitData] = useState<unknown>();
-  const { tournamentId } = router.query;
-
-  if (!tournamentId || !session) return;
 
   return (
     <>
       <TournamentHeader
-        tournamentId={tournamentId!.toString()}
+        tournamentId={tournamentData.id}
         submitData={submitData}
       />
 
       <div className="grid auto-rows-fr grid-cols-1 px-4 lg:grid-cols-2 lg:gap-[100px] lg:px-0">
         <div className="flex flex-col">
-          <TournamentParticipants tournamentId={tournamentId!.toString()} />
+          <TournamentParticipants tournamentId={tournamentData.id} />
 
           <TournamentPrizes />
         </div>
@@ -36,7 +41,7 @@ function TournamentView() {
         <LECTable
           userId={session.user.id}
           setSubmitData={setSubmitData}
-          tournamentId={tournamentId!.toString()}
+          tournamentId={tournamentData.id}
         />
       </div>
     </>
@@ -45,7 +50,9 @@ function TournamentView() {
 
 export default TournamentView;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext<{ tournamentId: string }>
+) {
   const supabase = createServerSupabaseClient(context);
   const {
     data: { session },
@@ -59,13 +66,38 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
 
-  //CHECK IF TOURNAMENT EXISTS
-  //CHECK IF USER IS ON THE TOURNAMENT OTHERWISE JOIN HIM IF TOURNAMENT IS NOT EXPIRED
+  const ssg = createProxySSGHelpers({
+    router: appRouter,
+    ctx: await createContext(),
+    transformer: superjson,
+  });
+  const tournamentId = context.params?.tournamentId as string;
 
-  return {
-    props: {
-      initialSession: session,
-      user: session.user,
-    },
-  };
-};
+  try {
+    const tournamentData = await ssg.tournament.getById.fetch({ tournamentId });
+
+    const serializeUserData = tournamentData?.users_on_tournament.map(
+      (user) => {
+        return { ...user, id: Number(user.id) };
+      }
+    );
+
+    return {
+      props: {
+        tournamentData: JSON.parse(
+          JSON.stringify({
+            ...tournamentData,
+            id: tournamentData?.id,
+            typeId: Number(tournamentData?.typeId),
+            users_on_tournament: serializeUserData,
+          })
+        ),
+        session: session,
+      },
+    };
+  } catch (e: unknown) {
+    return {
+      notFound: true,
+    };
+  }
+}

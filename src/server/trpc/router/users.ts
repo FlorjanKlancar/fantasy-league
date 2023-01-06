@@ -23,7 +23,7 @@ export const usersRouter = router({
           },
         });
       } catch {
-        (e: any) => console.error(e);
+        (e: unknown) => console.error(e);
       }
     }),
 
@@ -50,7 +50,7 @@ export const usersRouter = router({
 
         return response;
       } catch {
-        (e: any) => console.error(e);
+        (e: unknown) => console.error(e);
       }
     }),
 
@@ -72,7 +72,7 @@ export const usersRouter = router({
           },
         });
       } catch {
-        (e: any) => console.error(e);
+        (e: unknown) => console.error(e);
       }
     }),
 
@@ -80,7 +80,7 @@ export const usersRouter = router({
     try {
       return await ctx.prisma.user_data.findMany();
     } catch {
-      (e: any) => console.error(e);
+      (e: unknown) => console.error(e);
     }
   }),
   userJoinsTournament: publicProcedure
@@ -110,7 +110,7 @@ export const usersRouter = router({
         });
         return;
       } catch {
-        (e: any) => console.error(e);
+        (e: unknown) => console.error(e);
       }
     }),
 
@@ -136,7 +136,7 @@ export const usersRouter = router({
           }),
         });
       } catch {
-        (e: any) => console.error(e);
+        (e: unknown) => console.error(e);
       }
     }),
 });

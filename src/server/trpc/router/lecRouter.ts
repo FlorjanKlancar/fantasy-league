@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import dayjs from "dayjs";
 import { z } from "zod";
 
@@ -48,7 +49,7 @@ export const lecRouter = router({
             prediction: toJson(input.predictions),
           },
         });
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error(e);
         return;
       }
@@ -63,8 +64,15 @@ export const lecRouter = router({
     .query(async ({ ctx, input }) => {
       if (!input.userId || !input.tournamentId) return;
 
-      return await ctx.prisma.users_LEC_predictions.findFirst({
-        where: { userId: input.userId, tournamentId: input.tournamentId },
-      });
+      try {
+        return await ctx.prisma.users_LEC_predictions.findFirst({
+          where: { userId: input.userId, tournamentId: input.tournamentId },
+        });
+      } catch (e: unknown) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Could not find user for provided id, please try again.",
+        });
+      }
     }),
 });
