@@ -8,8 +8,10 @@ import { createProxySSGHelpers } from "@trpc/react-query/ssg";
 import superjson from "superjson";
 import { appRouter } from "../../../server/trpc/router/_app";
 import { createContext } from "../../../server/trpc/context";
-import { Session } from "@supabase/gotrue-js/src/lib/types";
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import {
+  createServerSupabaseClient,
+  Session,
+} from "@supabase/auth-helpers-nextjs";
 import { tournaments, users_on_tournament, user_data } from "@prisma/client";
 
 type Props = {
