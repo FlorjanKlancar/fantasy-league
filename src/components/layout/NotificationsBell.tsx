@@ -33,7 +33,7 @@ function NotificationsBell() {
         <Menu.Button className="flex-shrink-0 rounded-full bg-primary/80 p-1 text-white hover:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           {countNewNotifications.length ? (
             <div className="indicator flex items-center">
-              <span className="badge-accent badge indicator-item ml-4 h-5 w-5">
+              <span className="badge-accent badge indicator-item h-5 w-5 ">
                 {countNewNotifications.length}
               </span>
 

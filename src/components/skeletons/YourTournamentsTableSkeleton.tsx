@@ -19,7 +19,7 @@ function YourTournamentsTableSkeleton({
         </div>
       </div>
       <div className="overflow-x-auto rounded-lg">
-        <table className="table w-full">
+        <table className="table h-full w-full">
           <thead>
             <tr>
               {[...Array(numberOfHeaders)].map((_, i) => (

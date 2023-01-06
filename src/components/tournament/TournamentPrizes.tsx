@@ -41,7 +41,7 @@ const trophies = [
 
 export default function TournamentPrizes() {
   return (
-    <div className="mt-20 overflow-hidden border-2 border-primary/50 bg-slate-800 shadow sm:rounded-md ">
+    <div className="mt-5 overflow-hidden rounded border-2 border-primary/20 bg-slate-800 sm:rounded-md">
       <div className="bg-slate-900 p-4 text-sm font-bold	uppercase leading-4">
         <h2>Prizes</h2>
       </div>

@@ -11,12 +11,16 @@ function ClassicTable({ columns, data }: TableOptions<object>) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="table w-full" {...getTableProps()}>
+      <table className="table h-full w-full" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup, i: number) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={i}>
               {headerGroup.headers.map((column, i: number) => (
-                <th {...column.getHeaderProps()} key={i}>
+                <th
+                  {...column.getHeaderProps()}
+                  key={i}
+                  className="!important static"
+                >
                   {column.render("Header")}
                 </th>
               ))}

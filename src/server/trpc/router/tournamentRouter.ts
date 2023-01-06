@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
@@ -31,7 +32,11 @@ export const tournamentRouter = router({
 
         return response;
       } catch {
-        (e: any) => console.error(e);
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message:
+            "Could not find tournament for provided id, please try again.",
+        });
       }
     }),
   getTournamentTypes: publicProcedure.query(({ ctx }) => {

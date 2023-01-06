@@ -49,17 +49,21 @@ export const DraggableTableRow = ({ row, tournamentId }: any) => {
   return (
     <tr ref={setNodeRef} style={style} {...row.getRowProps()}>
       {isDragging ? (
-        <td colSpan={row.cells.length}>&nbsp;</td>
+        <td colSpan={row.cells.length} className="rounded-none">
+          &nbsp;
+        </td>
       ) : (
         row.cells.map((cell: any, i: number) =>
           i === 0 ? (
             <td
               key={i}
-              className={`${isUserLockedIn() ? "bg-slate-900" : ""}`}
+              className={`w-7 rounded-none ${
+                isUserLockedIn() ? "bg-slate-900" : ""
+              }`}
               {...cell.getCellProps()}
             >
               {isUserLockedIn() ? (
-                <LockClosedIcon className="ml-1 mt-1 h-6 w-6" />
+                <LockClosedIcon className="ml-1 mt-1 h-5 w-5 md:h-6 md:w-6" />
               ) : (
                 <DragHandle {...attributes} {...listeners} />
               )}
@@ -67,9 +71,13 @@ export const DraggableTableRow = ({ row, tournamentId }: any) => {
             </td>
           ) : (
             <td
-              className={`${isUserLockedIn() ? "bg-slate-900" : ""}`}
+              className={`rounded-none ${
+                isUserLockedIn() ? "bg-slate-900" : ""
+              }`}
               key={i}
               {...cell.getCellProps()}
+              {...(!isUserLockedIn() ? { ...attributes } : null)}
+              {...(!isUserLockedIn() ? { ...listeners } : null)}
             >
               {cell.render("Cell")}
             </td>

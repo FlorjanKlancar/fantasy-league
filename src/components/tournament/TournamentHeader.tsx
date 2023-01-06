@@ -91,8 +91,8 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
 
   return (
     <div className="my-6 border-b border-secondary px-4 pb-5 sm:px-0">
-      <div className="sm:flex sm:items-baseline sm:justify-between">
-        <div className="sm:w-0 sm:flex-1">
+      <div className="sm:items-baseline sm:justify-between lg:flex">
+        <div className="w-full">
           <div className="flex items-center space-x-4">
             <h1 className="text-2xl font-semibold sm:text-4xl">
               Tournament - {tournamentData.name}
@@ -104,7 +104,7 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
         </div>
 
         {submitData && (
-          <div className="mt-5 flex items-center justify-between space-x-5 sm:mt-0 sm:justify-end">
+          <div className="mt-5 flex w-full items-center justify-between space-x-5 sm:mt-0	sm:justify-end			">
             {dayjs(tournamentData.lockInDate) > dayjs() ? (
               <>
                 <p className="text-base sm:text-xl">
@@ -113,10 +113,10 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
                     {dayjs(tournamentData.lockInDate).format(dateFormat)}
                   </span>
                 </p>
-                <form className="" onSubmit={(e) => submitHandler(e)}>
+                <form onSubmit={(e) => submitHandler(e)}>
                   {userData?.userStatus === "Picking" ? (
                     <button
-                      className="btn flex items-center bg-green-600 text-white hover:bg-green-700"
+                      className="btn-sm btn flex w-28 items-center border-green-800 bg-green-600 text-white hover:bg-green-700 sm:btn-md lg:w-full"
                       onClick={async () => {
                         await toggleUserStatus.mutate(
                           {
@@ -135,11 +135,12 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
                         );
                       }}
                     >
-                      Lock in <CheckCircleIcon className="ml-1 h-6 w-6" />
+                      Lock in{" "}
+                      <CheckCircleIcon className="ml-1 h-4 w-4 lg:h-6 lg:w-6" />
                     </button>
                   ) : (
                     <button
-                      className="btn flex items-center bg-orange-600 text-white hover:bg-orange-700"
+                      className="btn-sm btn flex items-center border-orange-800 bg-orange-600 text-white hover:bg-orange-700 sm:btn-md"
                       type="button"
                       onClick={async () => {
                         const toastId = toast.loading("Unlocking...");
@@ -178,7 +179,7 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
           </div>
         )}
 
-        <div className="mt-4 hidden items-center justify-between sm:mt-0 sm:ml-6 sm:flex sm:flex-shrink-0 sm:justify-start">
+        <div className="mt-4 hidden items-center justify-between sm:mt-0 sm:ml-6 sm:justify-start lg:flex lg:flex-shrink-0">
           <Menu as="div" className="relative ml-3 inline-block text-left">
             <div>
               <Menu.Button className="-my-2 flex items-center rounded-full bg-slate-800 p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">

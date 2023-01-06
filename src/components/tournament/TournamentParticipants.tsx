@@ -39,7 +39,7 @@ export default function TournamentParticipants({ tournamentId }: Props) {
   };
 
   return (
-    <div className="overflow-hidden border-2 border-primary/50 bg-slate-800 sm:rounded-md">
+    <div className="overflow-hidden rounded border-2 border-primary/20 bg-slate-800 sm:rounded-md">
       <div className="flex justify-between bg-slate-900 p-4 text-sm font-bold	uppercase leading-4">
         <h2>Participants</h2>
         <p
@@ -85,20 +85,19 @@ export default function TournamentParticipants({ tournamentId }: Props) {
                         </p>
                       )}
                     </div>
-                    <div className="hidden md:block">
-                      <div>
-                        <p className="mb-2 text-sm">
-                          Joined on{" "}
-                          {participant.created_at && (
-                            <time>
-                              {dayjs(participant.created_at).format(
-                                "DD. MM. YYYY"
-                              )}
-                            </time>
-                          )}
-                        </p>
-                        <UserPickStatus userStatus={participant.userStatus} />
-                      </div>
+
+                    <div>
+                      <p className="mb-2 text-sm">
+                        Joined on{" "}
+                        {participant.created_at && (
+                          <time>
+                            {dayjs(participant.created_at).format(
+                              "DD. MM. YYYY"
+                            )}
+                          </time>
+                        )}
+                      </p>
+                      <UserPickStatus userStatus={participant.userStatus} />
                     </div>
                   </div>
                 </div>
