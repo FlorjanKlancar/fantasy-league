@@ -8,7 +8,6 @@ import NoDataTable from "../components/table/NoDataTable";
 import TournamentStatusBadge from "../components/tournament/TournamentStatusBadge";
 import UserLabels from "../components/user/UserLabels";
 import UserPickStatus from "../components/user/UserPickStatus";
-
 import { trpc } from "../utils/trpc";
 
 function HomePage() {
