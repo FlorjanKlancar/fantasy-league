@@ -10,7 +10,6 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     <>
       <Head>
         <title>Fantasy League</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Navbar />
