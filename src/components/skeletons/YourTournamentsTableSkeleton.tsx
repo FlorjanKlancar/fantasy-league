@@ -1,4 +1,5 @@
 import React from "react";
+import PageMainHeader from "../layout/PageMainHeader";
 
 type Props = {
   numberOfHeaders: number;
@@ -11,13 +12,8 @@ function YourTournamentsTableSkeleton({
 }: Props) {
   return (
     <>
-      <div className="my-6 border-b border-secondary pb-5">
-        <div className="sm:flex sm:items-baseline sm:justify-between">
-          <div className="sm:w-0 sm:flex-1">
-            <h1 className="text-4xl font-semibold">Your Tournaments</h1>
-          </div>
-        </div>
-      </div>
+      <PageMainHeader>Your tournaments</PageMainHeader>
+
       <div className="overflow-x-auto rounded-lg">
         <table className="table h-full w-full">
           <thead>

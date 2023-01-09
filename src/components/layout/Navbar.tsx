@@ -73,9 +73,11 @@ function Navbar() {
                 {session && (
                   <>
                     <div className="mr-5">
-                      <button className="btn-sm btn bg-secondary text-white hover:bg-secondary/60">
-                        New tournament
-                      </button>
+                      <Link href="/new-tournament">
+                        <button className="btn-sm btn bg-secondary text-white hover:bg-secondary/60">
+                          New tournament
+                        </button>
+                      </Link>
                     </div>
 
                     <NotificationsBell />

@@ -10,7 +10,7 @@ module.exports = {
     },
   },
   important: true,
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("@tailwindcss/forms")],
   daisyui: {
     themes: [
       {
