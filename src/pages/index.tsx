@@ -52,12 +52,12 @@ function HomePage() {
     []
   );
 
-  if (isLoading)
+  if (isLoading || !userTournaments)
     return (
       <YourTournamentsTableSkeleton numberOfHeaders={5} numberOfRows={5} />
     );
 
-  const tableData = userTournaments!.map((tournament) => {
+  const tableData = userTournaments.map((tournament) => {
     return {
       tournamentName: (
         <div className="flex items-center space-x-3 lg:pl-2">

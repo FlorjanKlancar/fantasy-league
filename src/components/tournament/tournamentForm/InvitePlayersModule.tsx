@@ -13,29 +13,21 @@
   ```
 */
 import { PlusIcon } from "@heroicons/react/20/solid";
-
-const people = [
-  {
-    name: "Lindsay Walton",
-    role: "Front-end Developer",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    name: "Courtney Henry",
-    role: "Designer",
-    imageUrl:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    name: "Tom Cook",
-    role: "Director, Product Development",
-    imageUrl:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
+import { useSession } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { MultiValue } from "react-select";
+import { trpc } from "../../../utils/trpc";
+import UserDropdown from "../../user/UserDropdown";
+import InviteRecommendations from "./InviteRecommendations";
 
 export default function InvitePlayersModule() {
+  const [inviteSelections, setInviteSelections] =
+    useState<MultiValue<{ label: string; value: string }>>();
+  const session = useSession();
+
+  if (!session) return <div>Loading</div>;
+
   return (
     <div className="mx-auto max-w-lg">
       <div>
@@ -63,72 +55,22 @@ export default function InvitePlayersModule() {
           </p>
         </div>
         <form action="#" className="mt-6 flex">
-          <label htmlFor="email" className="sr-only">
-            Email address
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Enter an email"
-          />
+          <UserDropdown setInviteSelections={setInviteSelections} />
+
           <button
             type="submit"
-            className="ml-4 flex-shrink-0 rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="ml-4 flex-shrink-0 rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Send invite
           </button>
         </form>
       </div>
       <div className="mt-10">
-        <h3 className="text-sm font-medium text-gray-500">
+        <h3 className="text-sm font-medium">
           Team members previously added to projects
         </h3>
-        <ul
-          role="list"
-          className="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200"
-        >
-          {people.map((person, personIdx) => (
-            <li
-              key={personIdx}
-              className="flex items-center justify-between space-x-3 py-4"
-            >
-              <div className="flex min-w-0 flex-1 items-center space-x-3">
-                <div className="flex-shrink-0">
-                  <img
-                    className="h-10 w-10 rounded-full"
-                    src={person.imageUrl}
-                    alt=""
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-gray-900">
-                    {person.name}
-                  </p>
-                  <p className="truncate text-sm font-medium text-gray-500">
-                    {person.role}
-                  </p>
-                </div>
-              </div>
-              <div className="flex-shrink-0">
-                <button
-                  type="button"
-                  className="inline-flex items-center rounded-full border border-transparent bg-gray-100 py-2 px-3 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  <PlusIcon
-                    className="-ml-1 mr-0.5 h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  <span className="text-sm font-medium text-gray-900">
-                    {" "}
-                    Invite <span className="sr-only">{person.name}</span>{" "}
-                  </span>
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+
+        <InviteRecommendations userId={session.user.id} />
       </div>
     </div>
   );

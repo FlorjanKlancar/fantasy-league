@@ -1,9 +1,14 @@
+import { useSession } from "@supabase/auth-helpers-react";
 import Head from "next/head";
 import React from "react";
 import PageMainHeader from "../../components/layout/PageMainHeader";
 import NewTournamentForm from "../../components/tournament/tournamentForm/NewTournamentForm";
 
 function NewTournamentPage() {
+  const session = useSession();
+
+  if (!session) return;
+
   return (
     <>
       <Head>
@@ -11,7 +16,7 @@ function NewTournamentPage() {
       </Head>
 
       <PageMainHeader>Create new tournament</PageMainHeader>
-      <NewTournamentForm />
+      <NewTournamentForm userId={session.user.id} />
     </>
   );
 }

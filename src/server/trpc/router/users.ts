@@ -139,4 +139,43 @@ export const usersRouter = router({
         (e: unknown) => console.error(e);
       }
     }),
+
+  getAllUsers: publicProcedure.query(async ({ ctx }) => {
+    try {
+      return await ctx.prisma.user_data.findMany({});
+    } catch {
+      (e: unknown) => console.error(e);
+    }
+  }),
+
+  getRecommendedUsersForInvite: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        return await ctx.prisma.users_on_tournament.findMany({
+          where: {
+            userId: input.userId,
+          },
+          include: {
+            tournaments: {
+              include: {
+                user_data: true,
+              },
+            },
+          },
+          orderBy: [
+            {
+              created_at: "desc",
+            },
+          ],
+          take: 3,
+        });
+      } catch {
+        (e: unknown) => console.error(e);
+      }
+    }),
 });
