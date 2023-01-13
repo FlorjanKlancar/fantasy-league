@@ -21,6 +21,8 @@ const config = {
       "w.namu.la",
       "avatars.dicebear.com",
       "lh3.googleusercontent.com",
+      "am-a.akamaihd.net",
+      "cdn-icons-png.flaticon.com",
     ],
   },
 };

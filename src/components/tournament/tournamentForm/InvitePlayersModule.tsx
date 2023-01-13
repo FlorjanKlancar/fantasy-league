@@ -1,23 +1,6 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-import { PlusIcon } from "@heroicons/react/20/solid";
 import { useSession } from "@supabase/auth-helpers-react";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { MultiValue } from "react-select";
-import { trpc } from "../../../utils/trpc";
 import UserDropdown from "../../user/UserDropdown";
 import InviteRecommendations from "./InviteRecommendations";
 

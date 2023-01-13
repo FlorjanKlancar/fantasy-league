@@ -1,22 +1,27 @@
-import { CheckIcon } from "@heroicons/react/24/solid";
+import { CheckIcon } from "@heroicons/react/24/outline";
+import React from "react";
 
-const steps = [
-  { id: "01", name: "Job details", href: "#", status: "complete" },
-  { id: "02", name: "Application form", href: "#", status: "current" },
-  { id: "03", name: "Preview", href: "#", status: "upcoming" },
-];
+type Props = {
+  props: any;
+  steps: any;
+};
 
-export default function FormProgression() {
-  return (
+function Nav(props: any) {
+  console.log(props.currentStep);
+  const tailwindNav = (
     <nav aria-label="Progress">
       <ol
         role="list"
-        className="divide-y divide-gray-300 rounded-md border border-gray-300 md:flex md:divide-y-0"
+        className="my-8 divide-y divide-gray-300 rounded-md border border-secondary bg-slate-900 md:flex md:divide-y-0"
       >
-        {steps.map((step, stepIdx) => (
-          <li key={step.name} className="relative md:flex md:flex-1">
-            {step.status === "complete" ? (
-              <a href={step.href} className="group flex w-full items-center">
+        {props.steps.map((step: any, stepIdx: number) => (
+          <li
+            key={step.name}
+            className="relative hover:cursor-pointer md:flex md:flex-1"
+            onClick={() => props.goToStep(stepIdx + 1)}
+          >
+            {step.status === "Completed" ? (
+              <a className="group flex w-full items-center">
                 <span className="flex items-center px-6 py-4 text-sm font-medium">
                   <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
                     <CheckIcon
@@ -24,14 +29,11 @@ export default function FormProgression() {
                       aria-hidden="true"
                     />
                   </span>
-                  <span className="ml-4 text-sm font-medium text-gray-900">
-                    {step.name}
-                  </span>
+                  <span className="ml-4 text-sm font-medium ">{step.name}</span>
                 </span>
               </a>
             ) : step.status === "current" ? (
               <a
-                href={step.href}
                 className="flex items-center px-6 py-4 text-sm font-medium"
                 aria-current="step"
               >
@@ -43,23 +45,20 @@ export default function FormProgression() {
                 </span>
               </a>
             ) : (
-              <a href={step.href} className="group flex items-center">
+              <a className="group flex items-center">
                 <span className="flex items-center px-6 py-4 text-sm font-medium">
                   <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300 group-hover:border-gray-400">
-                    <span className="text-gray-500 group-hover:text-gray-900">
-                      {step.id}
-                    </span>
+                    <span className="text-gray-500 ">{step.id}</span>
                   </span>
-                  <span className="ml-4 text-sm font-medium text-gray-500 group-hover:text-gray-900">
+                  <span className="ml-4 text-sm font-medium text-gray-500 ">
                     {step.name}
                   </span>
                 </span>
               </a>
             )}
 
-            {stepIdx !== steps.length - 1 ? (
+            {stepIdx !== props.steps.length - 1 ? (
               <>
-                {/* Arrow separator for lg screens and up */}
                 <div
                   className="absolute top-0 right-0 hidden h-full w-5 md:block"
                   aria-hidden="true"
@@ -85,4 +84,8 @@ export default function FormProgression() {
       </ol>
     </nav>
   );
+
+  return <div>{tailwindNav}</div>;
 }
+
+export default Nav;
