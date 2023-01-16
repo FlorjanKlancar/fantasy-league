@@ -14,6 +14,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { tournaments, users_on_tournament, user_data } from "@prisma/client";
 import { supabaseService } from "../../../utils/supabaseService";
+import { useSession } from "@supabase/auth-helpers-react";
 
 type Props = {
   session: Session;
@@ -24,9 +25,11 @@ type Props = {
   };
 };
 
-function TournamentView({ session, tournamentData }: Props) {
-  console.log("session", session, tournamentData);
+function TournamentView({ tournamentData }: Props) {
+  const session = useSession();
   const [submitData, setSubmitData] = useState<unknown>();
+
+  if (!session) return;
 
   return (
     <>
@@ -57,18 +60,22 @@ export default TournamentView;
 export async function getServerSideProps(
   context: GetServerSidePropsContext<{ tournamentId: string }>
 ) {
+  // Create authenticated Supabase Client
+  /*  const supabaseServ = supabaseService.auth.getSession();
   const supabase = createServerSupabaseClient(context);
+  // Check if we have a session
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
+  console.log(supabaseServ);
   if (!session)
     return {
       redirect: {
         destination: "/",
         permanent: false,
       },
-    };
+    }; */
 
   const ssg = createProxySSGHelpers({
     router: appRouter,
@@ -82,7 +89,6 @@ export async function getServerSideProps(
   try {
     const tournamentData = await ssg.tournament.getById.fetch({ tournamentId });
 
-    console.log({ tournamentData });
     if (!tournamentData) {
       return {
         notFound: true,
@@ -95,13 +101,13 @@ export async function getServerSideProps(
       }
     );
 
-    const findUserOnTournament = serializeUserData.find(
+    /*  const findUserOnTournament = serializeUserData.find(
       (user) => user.userId === session.user.id
     );
 
-    console.log({ findUserOnTournament });
+    console.log({ findUserOnTournament }); */
 
-    if (!findUserOnTournament && tournamentData.lockInDate > new Date()) {
+    /*  if (!findUserOnTournament && tournamentData.lockInDate > new Date()) {
       await supabaseService.from("users_on_tournament").insert({
         userId: session.user.id,
         tournamentId: tournamentData?.id,
@@ -111,7 +117,7 @@ export async function getServerSideProps(
       return {
         notFound: true,
       };
-    }
+    } */
 
     return {
       props: {
@@ -123,7 +129,7 @@ export async function getServerSideProps(
             users_on_tournament: serializeUserData,
           })
         ),
-        session: session,
+        /*  session: session, */
       },
     };
   } catch (e: unknown) {
