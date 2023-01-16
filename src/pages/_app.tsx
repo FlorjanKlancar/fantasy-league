@@ -1,37 +1,32 @@
-import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import {
   SessionContextProvider,
   useSession,
 } from "@supabase/auth-helpers-react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
-import { ReactElement, ReactNode, useState } from "react";
 import { trpc } from "../utils/trpc";
 import "../styles/globals.css";
 import AuthComponent from "../components/AuthComponent";
 import { DefaultLayout } from "../components/layout/DefaultLayout";
 import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
+import { supabaseClient } from "../utils/supabaseClient";
 
-export type NextPageWithLayout<
-  TProps = Record<string, unknown>,
-  TInitialProps = TProps
-> = NextPage<TProps, TInitialProps> & {
-  getLayout?: (page: ReactElement) => ReactNode;
+type MyAppProps = {
+  Component: React.ComponentType<NextPage>;
+  pageProps: any;
 };
 
-const MyApp = ({ Component, pageProps }: any) => {
+const MyApp = ({ Component, pageProps }: MyAppProps) => {
   const session = useSession();
 
   return !session ? <AuthComponent /> : <Component {...pageProps} />;
 };
 
 function MyAppWithProvider({ Component, pageProps }: AppProps) {
-  const [supabase] = useState(() => createBrowserSupabaseClient());
-
   return (
     <SessionContextProvider
-      supabaseClient={supabase}
+      supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
       <DefaultLayout>

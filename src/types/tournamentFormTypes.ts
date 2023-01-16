@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { z } from "zod";
 
 export const TournamentFormSchema = z.object({
@@ -18,5 +17,8 @@ export const TournamentFormSchema = z.object({
     (a) => new Date(z.string().parse(a)),
     z.date().min(new Date(), { message: "Date should be older than today!" })
   ),
+  tournamentType: z
+    .number()
+    .min(1, { message: "Please select Tournament Type!" }),
 });
 export type TournamentForm = z.infer<typeof TournamentFormSchema>;

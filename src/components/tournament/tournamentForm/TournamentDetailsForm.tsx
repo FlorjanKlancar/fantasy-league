@@ -1,50 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import {
-  TournamentForm,
-  TournamentFormSchema,
-} from "../../../types/tournamentFormTypes";
-import type { SubmitHandler } from "react-hook-form";
+import type { TournamentForm } from "../../../types/tournamentFormTypes";
+import { TournamentFormSchema } from "../../../types/tournamentFormTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import debounce from "debounce";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import ReactSelect from "react-select";
-import Image from "next/image";
-import { trpc } from "../../../utils/trpc";
-import { Combobox } from "@headlessui/react";
+import TournamentTypeDropdown from "./TournamentTypeDropdown";
 
-function TournamentDetailsForm(props: any) {
+type Props = {
+  createNewTournament: (tournamentData: TournamentForm) => void;
+};
+
+function TournamentDetailsForm({ createNewTournament }: Props) {
   const supabase = useSupabaseClient();
-
-  const { data, isLoading } = trpc.tournament.getTournamentTypes.useQuery();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     trigger,
     setError,
   } = useForm<TournamentForm>({
     mode: "onChange",
     resolver: zodResolver(TournamentFormSchema),
   });
-
-  const onSubmit: SubmitHandler<TournamentForm> = (data) => {
-    props.goToStep(2);
-    props.setSteps(() =>
-      props.steps.map((step: any) => {
-        if (step.id === 1) {
-          return {
-            ...step,
-            status: "Completed",
-          };
-        } else
-          return {
-            ...step,
-          };
-      })
-    );
-  };
 
   const onChangeDebounceHandler = async (searchString: string) => {
     if (!searchString) return;
@@ -63,32 +42,6 @@ function TournamentDetailsForm(props: any) {
       });
   };
 
-  const people = [
-    "Durward Reynolds",
-    "Kenton Towne",
-    "Therese Wunsch",
-    "Benedict Kessler",
-    "Katelyn Rohan",
-  ];
-  const [selectedPerson, setSelectedPerson] = useState(people[0]);
-  const [query, setQuery] = useState("");
-
-  const filteredPeople =
-    query === ""
-      ? people
-      : people.filter((person) => {
-          return person.toLowerCase().includes(query.toLowerCase());
-        });
-  if (isLoading || !data) return <div>Loading</div>;
-
-  const selectOptions = data.map((type) => {
-    return {
-      value: Number(type.id),
-      label: type.type,
-      image: type.logoImage,
-    };
-  });
-
   return (
     <div className="md:grid md:grid-cols-2 ">
       <div className="md:col-span-1">
@@ -103,7 +56,7 @@ function TournamentDetailsForm(props: any) {
         </div>
       </div>
       <div className="mt-5 md:col-span-1 md:mt-0">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(createNewTournament)}>
           <div className="shadow sm:overflow-hidden sm:rounded-md">
             <div className="space-y-6 bg-slate-800 px-4 py-5 sm:p-6">
               <div className="form-control w-full">
@@ -135,7 +88,7 @@ function TournamentDetailsForm(props: any) {
                 ) : null}
               </div>
 
-              <div className="form-control w-full ">
+              <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text font-bold capitalize text-white">
                     Tournament description
@@ -155,6 +108,29 @@ function TournamentDetailsForm(props: any) {
                   <label className="label">
                     <span className="label-text-alt text-error">
                       {errors.tournamentDescription.message}
+                    </span>
+                  </label>
+                ) : null}
+              </div>
+
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text font-bold capitalize text-white">
+                    Tournament Type
+                  </span>
+                </label>
+
+                <TournamentTypeDropdown
+                  register={register("tournamentType", {
+                    valueAsNumber: true,
+                  })}
+                  isError={errors.tournamentType ? true : false}
+                />
+
+                {errors.tournamentType ? (
+                  <label className="label">
+                    <span className="label-text-alt text-error">
+                      {errors.tournamentType.message}
                     </span>
                   </label>
                 ) : null}
@@ -187,9 +163,8 @@ function TournamentDetailsForm(props: any) {
           <button
             className="btn-primary btn mt-3 w-full disabled:bg-primary/30 disabled:text-white"
             type="submit"
-            disabled={!isValid}
           >
-            Next step (Application form)
+            Create Tournament
           </button>
         </form>
       </div>

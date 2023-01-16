@@ -13,7 +13,7 @@ import {
   Session,
 } from "@supabase/auth-helpers-nextjs";
 import { tournaments, users_on_tournament, user_data } from "@prisma/client";
-import { supabaseService } from "../../../utils/supabase";
+import { supabaseService } from "../../../utils/supabaseService";
 
 type Props = {
   session: Session;

@@ -1,27 +1,35 @@
-import { CheckIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import StepWizard from "react-step-wizard";
-import Nav from "./Nav";
+import { TournamentForm } from "../../../types/tournamentFormTypes";
+import { trpc } from "../../../utils/trpc";
 import TournamentDetailsForm from "./TournamentDetailsForm";
+import TournamentInvitesForm from "./TournamentInvitesForm";
 
 type Props = {
   userId: string;
 };
 
 export default function NewTournamentForm({ userId }: Props) {
-  const [steps, setSteps] = useState([
-    { id: 1, name: "Tournament Details", href: "#", status: "upcoming" },
-    { id: 2, name: "Application form", href: "#", status: "upcoming" },
-    { id: 3, name: "Preview", href: "#", status: "upcoming" },
-  ]);
+  const [showInviteComponent, setShowInviteComponent] = useState(false);
+  const [tournamentId, setTournamentId] = useState("");
+
+  //const createTournamentMutation = trpc.tournament.
+
+  const createNewTournament = async (tournamentData: TournamentForm) => {
+    console.log({ tournamentData });
+
+    setTournamentId("newId");
+    setShowInviteComponent(true);
+
+    //mutate and show invite component
+  };
 
   return (
-    <>
-      <StepWizard nav={<Nav steps={steps} />}>
-        <TournamentDetailsForm setSteps={setSteps} steps={steps} />
-        <div>invite</div>
-        <div>preview</div>
-      </StepWizard>
-    </>
+    <div className="mt-12">
+      {!showInviteComponent ? (
+        <TournamentDetailsForm createNewTournament={createNewTournament} />
+      ) : (
+        <TournamentInvitesForm userId={userId} tournamentId={tournamentId} />
+      )}
+    </div>
   );
 }
