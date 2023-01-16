@@ -25,6 +25,7 @@ type Props = {
 };
 
 function TournamentView({ session, tournamentData }: Props) {
+  console.log("session", session, tournamentData);
   const [submitData, setSubmitData] = useState<unknown>();
 
   return (
@@ -76,9 +77,12 @@ export async function getServerSideProps(
   });
   const tournamentId = context.params!.tournamentId as string;
 
+  console.log({ tournamentId });
+
   try {
     const tournamentData = await ssg.tournament.getById.fetch({ tournamentId });
 
+    console.log({ tournamentData });
     if (!tournamentData) {
       return {
         notFound: true,
@@ -94,6 +98,8 @@ export async function getServerSideProps(
     const findUserOnTournament = serializeUserData.find(
       (user) => user.userId === session.user.id
     );
+
+    console.log({ findUserOnTournament });
 
     if (!findUserOnTournament && tournamentData.lockInDate > new Date()) {
       await supabaseService.from("users_on_tournament").insert({
