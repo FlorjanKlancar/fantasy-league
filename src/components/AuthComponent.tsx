@@ -1,11 +1,9 @@
-import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useEffect, useState } from "react";
+import { supabaseClient } from "../utils/supabaseClient";
 import Modal from "./Modal";
 
 export default function AuthComponent() {
-  const [supabase] = useState(() => createBrowserSupabaseClient());
-
   const [open, setOpen] = useState(false);
   const [location, setLocation] = useState("");
 
@@ -44,9 +42,9 @@ export default function AuthComponent() {
         </div>
         <Modal open={open} setOpen={setOpen}>
           <Auth
-            providers={["google", "github", "discord", "twitter"]}
+            providers={["google", "discord", "twitter"]}
             socialLayout="horizontal"
-            supabaseClient={supabase}
+            supabaseClient={supabaseClient}
             appearance={{
               theme: ThemeSupa,
               variables: {
@@ -54,7 +52,6 @@ export default function AuthComponent() {
                   colors: {
                     brand: "#4f46e5",
                     brandAccent: "#4f46e5",
-
                     defaultButtonBackground: "black",
                   },
                 },

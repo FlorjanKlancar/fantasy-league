@@ -2,6 +2,7 @@ import { useSession } from "@supabase/auth-helpers-react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import React, { useMemo } from "react";
+import PageMainHeader from "../components/layout/PageMainHeader";
 import YourTournamentsTableSkeleton from "../components/skeletons/YourTournamentsTableSkeleton";
 import ClassicTable from "../components/table/ClassicTable";
 import NoDataTable from "../components/table/NoDataTable";
@@ -51,12 +52,12 @@ function HomePage() {
     []
   );
 
-  if (isLoading)
+  if (isLoading || !userTournaments)
     return (
       <YourTournamentsTableSkeleton numberOfHeaders={5} numberOfRows={5} />
     );
 
-  const tableData = userTournaments!.map((tournament) => {
+  const tableData = userTournaments.map((tournament) => {
     return {
       tournamentName: (
         <div className="flex items-center space-x-3 lg:pl-2">
@@ -106,13 +107,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="my-6 border-b border-secondary pb-5">
-        <div className="sm:flex sm:items-baseline sm:justify-between">
-          <div className="sm:w-0 sm:flex-1">
-            <h1 className="text-4xl font-semibold">Your Tournaments</h1>
-          </div>
-        </div>
-      </div>
+      <PageMainHeader>Your tournaments</PageMainHeader>
 
       {userTournaments?.length ? (
         <ClassicTable columns={columns} data={tableData} />

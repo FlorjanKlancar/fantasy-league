@@ -13,6 +13,7 @@ import {
   Session,
 } from "@supabase/auth-helpers-nextjs";
 import { tournaments, users_on_tournament, user_data } from "@prisma/client";
+import { supabaseService } from "../../../utils/supabaseService";
 
 type Props = {
   session: Session;
@@ -73,16 +74,38 @@ export async function getServerSideProps(
     ctx: await createContext(),
     transformer: superjson,
   });
-  const tournamentId = context.params?.tournamentId as string;
+  const tournamentId = context.params!.tournamentId as string;
 
   try {
     const tournamentData = await ssg.tournament.getById.fetch({ tournamentId });
+
+    if (!tournamentData) {
+      return {
+        notFound: true,
+      };
+    }
 
     const serializeUserData = tournamentData?.users_on_tournament.map(
       (user) => {
         return { ...user, id: Number(user.id) };
       }
     );
+
+    const findUserOnTournament = serializeUserData.find(
+      (user) => user.userId === session.user.id
+    );
+
+    if (!findUserOnTournament && tournamentData.lockInDate > new Date()) {
+      await supabaseService.from("users_on_tournament").insert({
+        userId: session.user.id,
+        tournamentId: tournamentData?.id,
+        userStatus: "Picking",
+      });
+    } else if (!findUserOnTournament) {
+      return {
+        notFound: true,
+      };
+    }
 
     return {
       props: {

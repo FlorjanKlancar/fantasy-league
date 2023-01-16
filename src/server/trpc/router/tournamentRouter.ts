@@ -32,6 +32,31 @@ export const tournamentRouter = router({
 
         return response;
       } catch {
+        (e: unknown) => console.error(e);
+      }
+    }),
+  getTournamentTypes: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.tournament_types.findMany();
+  }),
+
+  checkTournamentName: publicProcedure
+    .input(
+      z.object({
+        tournamentName: z.string().min(3).max(20),
+      })
+    )
+    .query(({ ctx, input }) => {
+      try {
+        if (!input.tournamentName.length) return;
+
+        return ctx.prisma.tournaments.count({
+          where: {
+            name: {
+              contains: input.tournamentName,
+            },
+          },
+        });
+      } catch {
         throw new TRPCError({
           code: "NOT_FOUND",
           message:
@@ -39,7 +64,4 @@ export const tournamentRouter = router({
         });
       }
     }),
-  getTournamentTypes: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.tournament_types.findMany();
-  }),
 });

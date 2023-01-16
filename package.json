@@ -1,5 +1,5 @@
 {
-  "name": "template",
+  "name": "fantasy-league",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
     "@dnd-kit/utilities": "^3.2.1",
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
+    "@hookform/resolvers": "^2.9.10",
     "@prisma/client": "^4.8.1",
     "@supabase/auth-helpers-nextjs": "^0.5.2",
     "@supabase/auth-helpers-react": "^0.3.1",
@@ -28,10 +29,12 @@
     "@vercel/analytics": "^0.1.6",
     "daisyui": "^2.46.0",
     "dayjs": "^1.11.7",
-    "next": "13.0.2",
-    "react": "18.2.0",
+    "debounce": "^1.2.1",
+    "next": "^13.1.1",
+    "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
-    "react-dom": "18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.41.5",
     "react-hot-toast": "^2.4.0",
     "react-select": "^5.7.0",
     "react-table": "^7.8.0",
@@ -40,6 +43,8 @@
     "zod": "^3.18.0"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "@types/debounce": "^1.2.1",
     "@types/node": "^18.0.0",
     "@types/react": "^18.0.14",
     "@types/react-copy-to-clipboard": "^5.0.4",
@@ -50,7 +55,7 @@
     "@typescript-eslint/parser": "^5.33.0",
     "autoprefixer": "^10.4.7",
     "eslint": "^8.31.0",
-    "eslint-config-next": "13.0.2",
+    "eslint-config-next": "^13.1.1",
     "eslint-plugin-unused-imports": "^2.0.0",
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",

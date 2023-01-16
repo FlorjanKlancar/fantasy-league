@@ -1,5 +1,4 @@
 import {
-  Cog8ToothIcon,
   CheckCircleIcon,
   XCircleIcon,
   EnvelopeOpenIcon,
@@ -19,6 +18,7 @@ import { Dayjs } from "dayjs";
 import { trpc } from "../../utils/trpc";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
+
 type DateType = string | number | Date | Dayjs;
 
 declare module "dayjs" {
