@@ -1,9 +1,11 @@
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useEffect, useState } from "react";
-import { supabaseClient } from "../utils/supabaseClient";
 import Modal from "./Modal";
 
 export default function AuthComponent() {
+  const supabaseClient = useSupabaseClient();
+
   const [open, setOpen] = useState(false);
   const [location, setLocation] = useState("");
 
