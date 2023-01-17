@@ -1,7 +1,6 @@
 import {
   SessionContextProvider,
   useSession,
-  useSupabaseClient,
 } from "@supabase/auth-helpers-react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
@@ -11,7 +10,6 @@ import AuthComponent from "../components/AuthComponent";
 import { DefaultLayout } from "../components/layout/DefaultLayout";
 import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
-import { supabaseClient } from "../utils/supabaseClient";
 import { useState } from "react";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 

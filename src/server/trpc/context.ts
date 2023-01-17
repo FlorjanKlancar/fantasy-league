@@ -2,11 +2,6 @@ import { type inferAsyncReturnType } from "@trpc/server";
 
 import { prisma } from "../db/client";
 
-/**
- * Replace this with an object if you want to pass things to createContextInner
- */
-type CreateContextOptions = Record<string, never>;
-
 /** Use this helper for:
  * - testing, so we dont have to mock Next.js' req/res
  * - trpc's `createSSGHelpers` where we don't have req/res

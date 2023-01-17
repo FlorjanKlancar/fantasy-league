@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ClipboardIcon } from "@heroicons/react/24/outline";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import UserDropdown from "./UserDropdown";
-import { MultiValue } from "react-select/dist/declarations/src";
+import type { MultiValue } from "react-select/dist/declarations/src";
 import { trpc } from "../../utils/trpc";
 import { toast } from "react-hot-toast";
 
