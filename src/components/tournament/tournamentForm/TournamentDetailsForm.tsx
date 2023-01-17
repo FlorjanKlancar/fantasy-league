@@ -33,7 +33,6 @@ function TournamentDetailsForm({ createNewTournament }: Props) {
       .from("tournaments")
       .select("*")
       .ilike("name", searchString);
-    console.log({ data });
 
     if (data?.length)
       setError("tournamentName", {

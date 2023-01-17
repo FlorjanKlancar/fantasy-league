@@ -62,16 +62,6 @@ export async function getServerSideProps(
     data: { session },
   } = await supabase.auth.getSession();
 
-  console.log({ session });
-
-  if (!session)
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-
   if (!session)
     return {
       redirect: {
