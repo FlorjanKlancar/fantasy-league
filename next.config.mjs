@@ -23,6 +23,7 @@ const config = {
       "lh3.googleusercontent.com",
       "am-a.akamaihd.net",
       "cdn-icons-png.flaticon.com",
+      "olecobyyqhwtozbupzvr.supabase.co",
     ],
   },
 };
