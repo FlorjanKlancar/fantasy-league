@@ -75,7 +75,9 @@ function HomePage() {
           </div>
         </div>
       ),
-      createdAt: dayjs(tournament.created_at).format("DD. MM. YYYY"),
+      createdAt: dayjs(tournament.tournaments.created_at).format(
+        "DD. MM. YYYY"
+      ),
       tournamentParticipants: (
         <UserLabels tournamentId={tournament.tournamentId} />
       ),

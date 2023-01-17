@@ -43,25 +43,27 @@ export default function AuthComponent() {
           </div>
         </div>
         <Modal open={open} setOpen={setOpen}>
-          <Auth
-            providers={["google", "discord", "twitter"]}
-            socialLayout="horizontal"
-            supabaseClient={supabaseClient}
-            appearance={{
-              theme: ThemeSupa,
-              variables: {
-                default: {
-                  colors: {
-                    brand: "#4f46e5",
-                    brandAccent: "#4f46e5",
-                    defaultButtonBackground: "black",
+          <div className="p-5">
+            <Auth
+              providers={["google", "discord", "twitter"]}
+              socialLayout="horizontal"
+              supabaseClient={supabaseClient}
+              appearance={{
+                theme: ThemeSupa,
+                variables: {
+                  default: {
+                    colors: {
+                      brand: "#4f46e5",
+                      brandAccent: "#4f46e5",
+                      defaultButtonBackground: "black",
+                    },
                   },
                 },
-              },
-            }}
-            redirectTo={location}
-            theme="dark"
-          />
+              }}
+              redirectTo={location}
+              theme="dark"
+            />
+          </div>
         </Modal>
       </main>
     </>

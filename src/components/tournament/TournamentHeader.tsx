@@ -10,7 +10,10 @@ import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useSession } from "@supabase/auth-helpers-react";
 import { TableLECData } from "../../types/TableTypes";
 import toast from "react-hot-toast";
-import { users_on_tournament, user_data } from "@prisma/client";
+import type { users_on_tournament, user_data } from "@prisma/client";
+import Modal from "../Modal";
+import DeleteTournamentModal from "./DeleteTournamentModal";
+import Link from "next/link";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -40,6 +43,7 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
       })
     | undefined
   >();
+  const [openModal, setOpenModal] = useState(false);
 
   const submitPredictionMutation =
     trpc.lec.submitLECTournamentPrediction.useMutation();
@@ -104,7 +108,7 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
         </div>
 
         {submitData && (
-          <div className="mt-5 flex w-full items-center justify-between space-x-5 sm:mt-0	sm:justify-end			">
+          <div className="mt-5 flex w-full items-center justify-between space-x-5 sm:mt-0 sm:place-content-end xl:w-2/3">
             {dayjs(tournamentData.lockInDate) > dayjs() ? (
               <>
                 <p className="text-base sm:text-xl">
@@ -179,75 +183,67 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
           </div>
         )}
 
-        <div className="mt-4 hidden items-center justify-between sm:mt-0 sm:ml-6 sm:justify-start lg:flex lg:flex-shrink-0">
-          <Menu as="div" className="relative ml-3 inline-block text-left">
-            <div>
-              <Menu.Button className="-my-2 flex items-center rounded-full bg-slate-800 p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <span className="sr-only">Open options</span>
-                <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
-              </Menu.Button>
-            </div>
+        {tournamentData.tournamentOwner === session?.user.id && (
+          <div className="mt-4 hidden items-center justify-between sm:mt-0 sm:ml-6 sm:justify-start lg:flex lg:flex-shrink-0">
+            <Menu as="div" className="relative ml-3 inline-block text-left">
+              <div>
+                <Menu.Button className="-my-2 flex items-center rounded-full bg-slate-800 p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <span className="sr-only">Open options</span>
+                  <EllipsisVerticalIcon
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  />
+                </Menu.Button>
+              </div>
 
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-slate-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="py-1">
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 z-10 w-40 origin-top-right rounded-md border border-primary/50 bg-slate-900 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <Link
+                        href={`/tournament/${tournamentId}/edit`}
                         className={classNames(
-                          active ? "" : "text-gray-700",
-                          "flex justify-between px-4 py-2 text-sm"
+                          active ? "bg-slate-700" : "",
+                          "block px-4 py-2 text-sm"
                         )}
                       >
-                        <span>Edit</span>
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        href="#"
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "flex justify-between px-4 py-2 text-sm"
-                        )}
-                      >
-                        <span>Duplicate</span>
-                      </a>
+                        Edit Tournament
+                      </Link>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        type="button"
                         className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "flex w-full justify-between px-4 py-2 text-sm"
+                          active ? "bg-slate-700" : "",
+                          "block px-4 py-2 text-sm"
                         )}
+                        onClick={() => setOpenModal(true)}
                       >
-                        <span>Archive</span>
+                        Delete Tournament
                       </button>
                     )}
                   </Menu.Item>
-                </div>
-              </Menu.Items>
-            </Transition>
-          </Menu>
-        </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
+          </div>
+        )}
       </div>
+      <Modal open={openModal} setOpen={setOpenModal}>
+        <DeleteTournamentModal
+          setOpen={setOpenModal}
+          tournamentId={tournamentId}
+        />
+      </Modal>
     </div>
   );
 }

@@ -156,23 +156,38 @@ export const usersRouter = router({
     )
     .query(async ({ ctx, input }) => {
       try {
-        return await ctx.prisma.users_on_tournament.findMany({
+        const findTournaments = await ctx.prisma.users_on_tournament.findMany({
           where: {
             userId: input.userId,
           },
-          include: {
-            tournaments: {
-              include: {
-                user_data: true,
+        });
+
+        if (!findTournaments) return;
+
+        return await ctx.prisma.users_on_tournament.findMany({
+          where: {
+            AND: [
+              {
+                tournamentId: {
+                  in: findTournaments.map(
+                    (tournament) => tournament.tournamentId
+                  ),
+                },
               },
-            },
+              { userId: { not: input.userId } },
+            ],
+          },
+          distinct: ["userId"],
+          include: {
+            user_data: true,
+            tournaments: true,
           },
           orderBy: [
             {
               created_at: "desc",
             },
           ],
-          take: 3,
+          take: 4,
         });
       } catch {
         (e: unknown) => console.error(e);

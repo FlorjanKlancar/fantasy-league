@@ -1,4 +1,6 @@
+import dayjs from "dayjs";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { TournamentForm } from "../../../types/tournamentFormTypes";
 import { trpc } from "../../../utils/trpc";
 import TournamentDetailsForm from "./TournamentDetailsForm";
@@ -10,25 +12,36 @@ type Props = {
 
 export default function NewTournamentForm({ userId }: Props) {
   const [showInviteComponent, setShowInviteComponent] = useState(false);
-  const [tournamentId, setTournamentId] = useState("");
 
-  //const createTournamentMutation = trpc.tournament.
+  const createTournamentMutation =
+    trpc.tournament.createNewTournament.useMutation();
 
   const createNewTournament = async (tournamentData: TournamentForm) => {
-    console.log({ tournamentData });
+    await createTournamentMutation.mutate({
+      tournamentName: tournamentData.tournamentName,
+      tournamentDescription: tournamentData.tournamentDescription,
+      tournamentOwnerId: userId,
+      tournamentType: tournamentData.tournamentType,
+      tournamentEndDate: dayjs(tournamentData.tournamentEndDate),
+    });
 
-    setTournamentId("newId");
     setShowInviteComponent(true);
-
-    //mutate and show invite component
   };
 
   return (
     <div className="mt-12">
       {!showInviteComponent ? (
-        <TournamentDetailsForm createNewTournament={createNewTournament} />
+        <TournamentDetailsForm
+          createNewTournament={createNewTournament}
+          isLoading={createTournamentMutation.isLoading}
+        />
       ) : (
-        <TournamentInvitesForm userId={userId} tournamentId={tournamentId} />
+        createTournamentMutation.data && (
+          <TournamentInvitesForm
+            userId={userId}
+            tournamentId={createTournamentMutation.data.id}
+          />
+        )
       )}
     </div>
   );

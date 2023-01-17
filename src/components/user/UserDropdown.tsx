@@ -3,7 +3,11 @@ import { trpc } from "../../utils/trpc";
 import Select from "react-select";
 import { MultiValue } from "react-select/dist/declarations/src";
 import DropdownSkeleton from "../skeletons/DropdownSkeleton";
-import { tournaments, users_on_tournament, user_data } from "@prisma/client";
+import type {
+  tournaments,
+  users_on_tournament,
+  user_data,
+} from "@prisma/client";
 
 type Props = {
   setInviteSelections: (

@@ -9,9 +9,10 @@ import TournamentTypeDropdown from "./TournamentTypeDropdown";
 
 type Props = {
   createNewTournament: (tournamentData: TournamentForm) => void;
+  isLoading: boolean;
 };
 
-function TournamentDetailsForm({ createNewTournament }: Props) {
+function TournamentDetailsForm({ createNewTournament, isLoading }: Props) {
   const supabase = useSupabaseClient();
 
   const {
@@ -162,8 +163,9 @@ function TournamentDetailsForm({ createNewTournament }: Props) {
           <button
             className="btn-primary btn mt-3 w-full disabled:bg-primary/30 disabled:text-white"
             type="submit"
+            disabled={isLoading ? true : false}
           >
-            Create Tournament
+            {isLoading ? "Loading" : "Create Tournament"}
           </button>
         </form>
       </div>

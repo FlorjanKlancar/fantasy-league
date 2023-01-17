@@ -1,15 +1,14 @@
-import { PlusIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import React from "react";
 import { trpc } from "../../../utils/trpc";
 import InviteRecommendationsSkeleton from "../../skeletons/InviteRecommendationsSkeleton";
-import UserAvatar from "../../user/UserAvatar";
+import InviteRecommendationsRow from "./InviteRecommendationsRow";
 
 type Props = {
   userId: string;
+  tournamentId: string;
 };
 
-export default function InviteRecommendations({ userId }: Props) {
+export default function InviteRecommendations({ userId, tournamentId }: Props) {
   const { data: recommendedUsers, isLoading } =
     trpc.users.getRecommendedUsersForInvite.useQuery({
       userId,
@@ -23,52 +22,24 @@ export default function InviteRecommendations({ userId }: Props) {
       role="list"
       className="mt-4 divide-y divide-primary border-t border-b border-primary"
     >
-      {recommendedUsers.map((user, i) => (
-        <li
-          key={i}
-          className="flex items-center justify-between space-x-3 py-4"
-        >
+      {recommendedUsers.length ? (
+        recommendedUsers.map((user, i) => (
+          <InviteRecommendationsRow
+            key={i}
+            user={user}
+            userId={userId}
+            tournamentId={tournamentId}
+          />
+        ))
+      ) : (
+        <li className="flex items-center justify-between space-x-3 py-4">
           <div className="flex min-w-0 flex-1 items-center space-x-3">
-            <div className="relative h-10 w-10  flex-shrink-0">
-              <UserAvatar
-                imagePx={10}
-                userProfileImg={user.tournaments.user_data.avatar_url!}
-                userFullName={user.tournaments.user_data.full_name!}
-                userId={user.tournaments.user_data.id}
-              />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-white">
-                {user.tournaments.user_data.full_name ??
-                  user.tournaments.user_data.email}
-              </p>
-              <p className="flex truncate text-sm font-medium text-gray-500">
-                You played together in{" "}
-                <Link
-                  href={`/tournament/${user.tournaments.id}`}
-                  target={"_blank"}
-                >
-                  <span className="text_link ml-1">
-                    {user.tournaments.name}
-                  </span>
-                </Link>
-              </p>
-            </div>
-          </div>
-          <div className="flex-shrink-0">
-            <button
-              type="button"
-              className="inline-flex items-center rounded-full border border-transparent bg-secondary py-2 px-3 hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              <PlusIcon
-                className="-ml-1 mr-0.5 h-5 w-5 text-white"
-                aria-hidden="true"
-              />
-              <span className="text-sm font-medium">Invite</span>
-            </button>
+            <p className="flex text-sm font-medium text-gray-500">
+              You need to play some tournaments first!
+            </p>
           </div>
         </li>
-      ))}
+      )}
     </ul>
   );
 }

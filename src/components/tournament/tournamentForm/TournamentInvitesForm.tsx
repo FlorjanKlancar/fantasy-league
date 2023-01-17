@@ -69,15 +69,18 @@ function TournamentInvitesForm({ userId, tournamentId }: Props) {
                 </div>
                 <div className="mt-10">
                   <h3 className="text-sm font-medium">
-                    Team members previously added to projects
+                    Players who participated in your tournaments
                   </h3>
 
-                  <InviteRecommendations userId={userId} />
+                  <InviteRecommendations
+                    userId={userId}
+                    tournamentId={tournamentId}
+                  />
                 </div>
               </div>
             </div>
           </div>
-          <Link href={tournamentId}>
+          <Link href={`/tournament/${tournamentId}`}>
             <button className="btn-primary btn mt-3 w-full">
               Show Tournament
             </button>
