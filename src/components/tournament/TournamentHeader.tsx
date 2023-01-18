@@ -155,7 +155,9 @@ export default function TournamentHeader({ tournamentId, submitData }: Props) {
                           },
                           {
                             onSuccess() {
-                              toast.success("Teams unlocked!", { id: toastId });
+                              toast.success("Teams unlocked!", {
+                                id: toastId,
+                              });
 
                               utils.users.getUsersOnTournament.invalidate();
                               utils.tournament.getById.invalidate();

@@ -97,14 +97,12 @@ export default function TournamentParticipants({ tournamentId }: Props) {
                     )}
                   </div>
                   <div className="min-w-0 flex-1 items-center px-4 text-lg md:grid md:grid-cols-2 md:gap-4">
-                    <div>
-                      {participant.user_data && (
-                        <p className="truncate font-medium text-primary">
-                          {participant.user_data.full_name ??
-                            participant.user_data.email}
-                        </p>
-                      )}
-                    </div>
+                    {participant.user_data && (
+                      <p className="truncate font-medium text-primary">
+                        {participant.user_data.full_name ??
+                          participant.user_data.email}
+                      </p>
+                    )}
 
                     <div>
                       <p className="mb-2 text-sm">
@@ -121,6 +119,7 @@ export default function TournamentParticipants({ tournamentId }: Props) {
                     </div>
                   </div>
                 </div>
+
                 <div>
                   <ChevronRightIcon
                     className="h-5 w-5 text-gray-400"
