@@ -134,6 +134,7 @@ export default function DragAndDropTable({
                     key={row.original.id}
                     row={row}
                     tournamentId={tournamentId}
+                    isUserLockedIn={isUserLockedIn}
                   />
                 );
               })}

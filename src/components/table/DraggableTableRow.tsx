@@ -5,11 +5,12 @@ import { DragHandle } from "./DragHandle";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 import { trpc } from "../../utils/trpc";
 import { useSession } from "@supabase/auth-helpers-react";
-import dayjs from "dayjs";
 
-export const DraggableTableRow = ({ row, tournamentId }: any) => {
-  const session = useSession();
-
+export const DraggableTableRow = ({
+  row,
+  tournamentId,
+  isUserLockedIn,
+}: any) => {
   const {
     attributes,
     listeners,
@@ -31,21 +32,6 @@ export const DraggableTableRow = ({ row, tournamentId }: any) => {
 
   if (isLoading || !tournamentData) return <div>Loading</div>;
 
-  const isUserLockedIn = () => {
-    const findUserOnTournament = tournamentData.users_on_tournament.find(
-      (user) => user.userId === session?.user.id
-    );
-
-    if (
-      findUserOnTournament?.userStatus === "Locked in" ||
-      dayjs(tournamentData.lockInDate) < dayjs()
-    ) {
-      return true;
-    }
-
-    return false;
-  };
-
   return (
     <tr ref={setNodeRef} style={style} {...row.getRowProps()}>
       {isDragging ? (
@@ -58,11 +44,11 @@ export const DraggableTableRow = ({ row, tournamentId }: any) => {
             <td
               key={i}
               className={`w-7 rounded-none ${
-                isUserLockedIn() ? "bg-slate-900" : ""
+                isUserLockedIn ? "bg-slate-900" : ""
               }`}
               {...cell.getCellProps()}
             >
-              {isUserLockedIn() ? (
+              {isUserLockedIn ? (
                 <LockClosedIcon className="ml-1 mt-1 h-5 w-5 md:h-6 md:w-6" />
               ) : (
                 <DragHandle {...attributes} {...listeners} />
@@ -71,13 +57,11 @@ export const DraggableTableRow = ({ row, tournamentId }: any) => {
             </td>
           ) : (
             <td
-              className={`rounded-none ${
-                isUserLockedIn() ? "bg-slate-900" : ""
-              }`}
+              className={`rounded-none ${isUserLockedIn ? "bg-slate-900" : ""}`}
               key={i}
               {...cell.getCellProps()}
-              {...(!isUserLockedIn() ? { ...attributes } : null)}
-              {...(!isUserLockedIn() ? { ...listeners } : null)}
+              {...(!isUserLockedIn ? { ...attributes } : null)}
+              {...(!isUserLockedIn ? { ...listeners } : null)}
             >
               {cell.render("Cell")}
             </td>

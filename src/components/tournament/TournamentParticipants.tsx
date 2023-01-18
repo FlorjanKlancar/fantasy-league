@@ -5,13 +5,14 @@ import UserAvatar from "../user/UserAvatar";
 import UserPickStatus from "../user/UserPickStatus";
 import TournamentParticipantsSkeleton from "../skeletons/TournamentParticipantsSkeleton";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import Modal from "../Modal";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "@supabase/auth-helpers-react";
 import InviteUser from "../user/InviteUser";
 import { toast } from "react-hot-toast";
+import { tournaments, users_on_tournament, user_data } from "@prisma/client";
 
 type Props = {
   tournamentId: string;
@@ -38,6 +39,35 @@ export default function TournamentParticipants({ tournamentId }: Props) {
     setOpenModal(false);
   };
 
+  const ConditionalLinkWrapper = (
+    participant: users_on_tournament & {
+      user_data: user_data;
+      tournaments: tournaments;
+    },
+    children: ReactNode
+  ) => {
+    return participant.userStatus === "Locked in" ||
+      session?.user.id === participant.userId ? (
+      <Link
+        href={
+          session?.user.id === participant.userId
+            ? `/tournament/${tournamentId}`
+            : `/tournament/${tournamentId}/${participant.userId}`
+        }
+        className={`block hover:bg-slate-900/50 ${
+          (userId ? userId?.toString() : session?.user.id) ===
+          participant.userId
+            ? "bg-secondary/10"
+            : ""
+        }`}
+      >
+        {children}
+      </Link>
+    ) : (
+      children
+    );
+  };
+
   return (
     <div className="overflow-hidden rounded border-2 border-primary/20 bg-slate-800 sm:rounded-md">
       <div className="flex justify-between bg-slate-900 p-4 text-sm font-bold	uppercase leading-4">
@@ -52,18 +82,8 @@ export default function TournamentParticipants({ tournamentId }: Props) {
       <ul role="list" className="divide-y divide-slate-600">
         {participantsData.map((participant, i: number) => (
           <li key={i}>
-            <Link
-              href={
-                session?.user.id === participant.userId
-                  ? `/tournament/${tournamentId}`
-                  : `/tournament/${tournamentId}/${participant.userId}`
-              }
-              className={`block hover:bg-slate-900/50 ${
-                userId?.toString() === participant.userId
-                  ? "bg-slate-900/50"
-                  : ""
-              }`}
-            >
+            {ConditionalLinkWrapper(
+              participant,
               <div className="flex items-center px-4 py-4 sm:px-6">
                 <div className="flex min-w-0 flex-1 items-center">
                   <div className="flex-shrink-0">
@@ -108,7 +128,7 @@ export default function TournamentParticipants({ tournamentId }: Props) {
                   />
                 </div>
               </div>
-            </Link>
+            )}
           </li>
         ))}
       </ul>
