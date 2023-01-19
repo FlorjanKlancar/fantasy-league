@@ -51,12 +51,15 @@ function TournamentView({ session, tournamentData }: Props) {
               around with different scenarios, placing teams and players in
               different positions to see how it affects the final standings. The
               ability to drag and drop teams and players is a fast and easy way
-              to make predictions and have fun while doing it. Our app also
-              allows you to compare your predictions with other players and see
-              how your predictions stack up against the competition. With the
-              ability to share your predictions with friends and other players,
-              you can also challenge them to beat your predictions. The winner
-              takes it all.
+              to make predictions and have fun while doing it.
+            </p>
+            <h2 className="text my-2 uppercase text-white">About app</h2>
+            <p className="text-sm text-slate-400">
+              Our app also allows you to compare your predictions with other
+              players and see how your predictions stack up against the
+              competition. With the ability to share your predictions with
+              friends and other players, you can also challenge them to beat
+              your predictions. The winner takes it all.
             </p>
           </div>
           <TournamentParticipants tournamentId={tournamentData.id} />

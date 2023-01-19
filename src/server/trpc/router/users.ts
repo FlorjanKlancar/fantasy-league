@@ -46,6 +46,11 @@ export const usersRouter = router({
               include: { tournament_types: true },
             },
           },
+          orderBy: [
+            {
+              created_at: "desc",
+            },
+          ],
         });
 
         return response;

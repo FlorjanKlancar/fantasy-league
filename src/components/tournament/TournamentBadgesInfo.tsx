@@ -14,7 +14,7 @@ import { TableLECData } from "../../types/TableTypes";
 import { trpc } from "../../utils/trpc";
 import { dateFormat } from "../../utils/variables";
 import TournamentBadgesInfoSkeleton from "../skeletons/TournamentBadgesInfoSkeleton";
-import TournamentHeaderSkeleton from "../skeletons/TournamentHeaderSkeleton";
+import UserLabels from "../user/UserLabels";
 
 type Props = {
   tournamentId: string;
@@ -137,6 +137,10 @@ function TournamentBadgesInfo({ tournamentId, userId, submitData }: Props) {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="p-5">
+        <UserLabels tournamentId={tournamentId} />
       </div>
 
       {submitData && (

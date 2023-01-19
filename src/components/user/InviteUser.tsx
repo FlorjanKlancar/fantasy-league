@@ -55,7 +55,7 @@ function InviteUser({
   };
 
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={submitHandler} className="p-5">
       <h2 className="my-3 text-sm	font-bold uppercase leading-4">
         Invite players to this tournament - Disabled for now
       </h2>
