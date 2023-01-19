@@ -16,9 +16,10 @@ function TournamentHeaderSkeleton() {
             <p className="skeleton_default_style mt-2 h-5 w-40 truncate rounded text-sm" />
           </div>
 
-          <div className="mt-5 flex items-center justify-between space-x-5 sm:mt-0 sm:place-content-end xl:w-2/3">
-            <div className="skeleton_default_style h-5 w-40 rounded sm:h-8 lg:w-72" />
-            <div className="skeleton_default_style btn-sm btn flex w-28 items-center border-none sm:btn-md lg:w-full" />
+          <div className="mt-4 hidden items-center justify-between sm:mt-0 sm:ml-6 sm:justify-start lg:flex lg:flex-shrink-0">
+            <div className="relative ml-3 inline-block text-left">
+              <div className="skeleton_default_style h-9 w-9 rounded-full"></div>
+            </div>
           </div>
         </div>
       </div>

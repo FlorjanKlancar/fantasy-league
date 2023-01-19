@@ -43,7 +43,7 @@ export default function TournamentPrizes() {
   return (
     <div className="mt-5 overflow-hidden rounded border-2 border-primary/20 bg-slate-800 sm:rounded-md">
       <div className="bg-slate-900 p-4 text-sm font-bold	uppercase leading-4">
-        <h2>Prizes</h2>
+        <h2>Total prize pool</h2>
       </div>
       <ul role="list" className="divide-y divide-slate-600">
         {trophies.map((trophy, i: number) => (

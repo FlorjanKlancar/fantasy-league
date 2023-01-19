@@ -12,6 +12,7 @@ import type { Session } from "@supabase/auth-helpers-nextjs";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { tournaments, users_on_tournament, user_data } from "@prisma/client";
 import { supabaseService } from "../../../utils/supabaseService";
+import TournamentBadgesInfo from "../../../components/tournament/TournamentBadgesInfo";
 
 type Props = {
   session: Session;
@@ -23,20 +24,42 @@ type Props = {
 };
 
 function TournamentView({ session, tournamentData }: Props) {
-  const [submitData, setSubmitData] = useState<unknown>();
+  const [submitData, setSubmitData] = useState<any>();
 
   return (
     <>
       <TournamentHeader
         tournamentId={tournamentData.id}
-        submitData={submitData}
+        userId={session.user.id}
       />
 
-      <div className="grid auto-rows-fr grid-cols-1 px-4 lg:grid-cols-2 lg:gap-[100px] lg:px-0">
-        <div className="flex flex-col">
-          <TournamentParticipants tournamentId={tournamentData.id} />
+      <TournamentBadgesInfo
+        tournamentId={tournamentData.id}
+        submitData={submitData}
+        userId={session.user.id}
+      />
 
-          <TournamentPrizes />
+      <div className="grid grid-cols-1 gap-14 px-4 pt-5 lg:grid-cols-2 lg:gap-[100px] lg:px-0">
+        <div className="flex flex-col space-y-5">
+          <div className="h-1/3">
+            <h2 className="text my-2 uppercase text-white">HOW DOES IT WORK</h2>
+            <p className="text-sm text-slate-400">
+              you have the power to easily move teams and players around,
+              creating your own predictions for how the tournament will play
+              out. Our intuitive interface makes it simple for you to visualize
+              your predictions and make adjustments as needed. You can play
+              around with different scenarios, placing teams and players in
+              different positions to see how it affects the final standings. The
+              ability to drag and drop teams and players is a fast and easy way
+              to make predictions and have fun while doing it. Our app also
+              allows you to compare your predictions with other players and see
+              how your predictions stack up against the competition. With the
+              ability to share your predictions with friends and other players,
+              you can also challenge them to beat your predictions. The winner
+              takes it all.
+            </p>
+          </div>
+          <TournamentParticipants tournamentId={tournamentData.id} />
         </div>
 
         <LECTable
@@ -114,6 +137,10 @@ export async function getServerSideProps(
             id: tournamentData?.id,
             typeId: Number(tournamentData?.typeId),
             users_on_tournament: serializeUserData,
+            tournament_types: {
+              ...tournamentData.tournament_types,
+              id: Number(tournamentData.tournament_types.id),
+            },
           })
         ),
         session: session,
