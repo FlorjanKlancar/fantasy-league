@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
+import { TournamentLayout } from "../../../../components/layout/TournamentLayout";
 import LECTable from "../../../../components/table/LECTable";
-import TournamentHeader from "../../../../components/tournament/TournamentHeader";
 import TournamentParticipants from "../../../../components/tournament/TournamentParticipants";
 import TournamentPrizes from "../../../../components/tournament/TournamentPrizes";
 
@@ -13,9 +13,10 @@ function SpecificUserPicks() {
   if (!tournamentId || !userId) return;
 
   return (
-    <>
-      <TournamentHeader tournamentId={tournamentId!.toString()} />
-
+    <TournamentLayout
+      userId={userId.toString()}
+      tournamentId={tournamentId.toString()}
+    >
       <div className="grid auto-rows-fr grid-cols-1 px-4 md:grid-cols-2 md:gap-[100px] md:px-0">
         <div className="flex flex-col">
           <TournamentParticipants tournamentId={tournamentId!.toString()} />
@@ -28,7 +29,7 @@ function SpecificUserPicks() {
           tournamentId={tournamentId!.toString()}
         />
       </div>
-    </>
+    </TournamentLayout>
   );
 }
 
