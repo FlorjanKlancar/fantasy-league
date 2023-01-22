@@ -1,8 +1,6 @@
 import React from "react";
 
-type Props = {};
-
-function TournamentBadgesInfoSkeleton({}: Props) {
+function TournamentBadgesInfoSkeleton() {
   return (
     <div className="my-5 flex w-full flex-col items-center justify-between px-4 lg:my-8 lg:flex-row lg:px-0">
       <div className="flex w-full flex-col space-y-5 sm:mb-8 sm:flex-row sm:space-y-0 sm:space-x-2 lg:mb-0">

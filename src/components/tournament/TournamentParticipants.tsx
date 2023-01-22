@@ -5,14 +5,19 @@ import UserAvatar from "../user/UserAvatar";
 import UserPickStatus from "../user/UserPickStatus";
 import TournamentParticipantsSkeleton from "../skeletons/TournamentParticipantsSkeleton";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { ReactNode, useState } from "react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 import Modal from "../Modal";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "@supabase/auth-helpers-react";
 import InviteUser from "../user/InviteUser";
 import { toast } from "react-hot-toast";
-import { tournaments, users_on_tournament, user_data } from "@prisma/client";
+import type {
+  tournaments,
+  users_on_tournament,
+  user_data,
+} from "@prisma/client";
 
 type Props = {
   tournamentId: string;

@@ -6,7 +6,11 @@ import { appRouter } from "../../../server/trpc/router/_app";
 import { createContext } from "../../../server/trpc/context";
 import type { Session } from "@supabase/auth-helpers-nextjs";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { tournaments, users_on_tournament, user_data } from "@prisma/client";
+import type {
+  tournaments,
+  users_on_tournament,
+  user_data,
+} from "@prisma/client";
 import { supabaseService } from "../../../utils/supabaseService";
 import { TournamentLayout } from "../../../components/layout/TournamentLayout";
 import LECTournamentFormat from "../../../components/tournament/LECTournamentFormat";

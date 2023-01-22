@@ -1,6 +1,6 @@
 import React from "react";
 import { trpc } from "../../../utils/trpc";
-import { UseFormRegisterReturn } from "react-hook-form";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 type Props = {
   register: UseFormRegisterReturn<any>;

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import TournamentHeader from "../tournament/TournamentHeader";
 import TournamentBadgesInfo from "../tournament/TournamentBadgesInfo";
+import Breadcrumbs from "../Breadcrumbs";
 
 type DefaultLayoutProps = {
   children: ReactNode;
@@ -17,6 +18,8 @@ export const TournamentLayout = ({
 }: DefaultLayoutProps) => {
   return (
     <>
+      <Breadcrumbs />
+
       <TournamentHeader tournamentId={tournamentId} userId={userId} />
 
       <TournamentBadgesInfo

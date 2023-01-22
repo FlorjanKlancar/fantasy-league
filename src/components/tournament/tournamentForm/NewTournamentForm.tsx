@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
-import { TournamentForm } from "../../../types/tournamentFormTypes";
+import type { TournamentForm } from "../../../types/tournamentFormTypes";
 import { trpc } from "../../../utils/trpc";
 import TournamentDetailsForm from "./TournamentDetailsForm";
 import TournamentInvitesForm from "./TournamentInvitesForm";
@@ -23,6 +22,7 @@ export default function NewTournamentForm({ userId }: Props) {
       tournamentOwnerId: userId,
       tournamentType: tournamentData.tournamentType,
       tournamentEndDate: dayjs(tournamentData.tournamentEndDate),
+      tournamentTicket: tournamentData.tournamentTicket,
     });
 
     setShowInviteComponent(true);

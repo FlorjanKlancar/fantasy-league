@@ -198,4 +198,20 @@ export const usersRouter = router({
         (e: unknown) => console.error(e);
       }
     }),
+
+  removeUserFromTournament: publicProcedure
+    .input(
+      z.object({
+        userOnTournamentId: z.bigint(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        return await ctx.prisma.users_on_tournament.delete({
+          where: { id: BigInt(input.userOnTournamentId) },
+        });
+      } catch {
+        (e: unknown) => console.error(e);
+      }
+    }),
 });

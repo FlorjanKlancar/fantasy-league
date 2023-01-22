@@ -75,6 +75,7 @@ export const tournamentRouter = router({
             lockInDate: input.tournamentEndDate,
             typeId: input.tournamentType,
             tournamentOwner: input.tournamentOwnerId,
+            ticketPrice: input.tournamentTicket,
           },
         });
 

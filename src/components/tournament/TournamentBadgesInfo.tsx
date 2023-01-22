@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { TableLECData } from "../../types/TableTypes";
+import type { TableLECData } from "../../types/TableTypes";
 import { trpc } from "../../utils/trpc";
 import { dateFormat } from "../../utils/variables";
 import TournamentBadgesInfoSkeleton from "../skeletons/TournamentBadgesInfoSkeleton";
@@ -54,7 +54,7 @@ function TournamentBadgesInfo({ tournamentId, userId, submitData }: Props) {
     );
 
     setUserPickStatus(findUser);
-  }, [tournamentData]);
+  }, [tournamentData, userId]);
 
   if (isLoading || !tournamentData || !userData || isLoadingPredictions)
     return <TournamentBadgesInfoSkeleton />;
@@ -144,7 +144,7 @@ function TournamentBadgesInfo({ tournamentId, userId, submitData }: Props) {
       </div>
 
       {submitData && (
-        <div className="mt-5 flex w-full sm:mt-0 lg:w-52">
+        <div className="mt-5 flex w-full sm:mt-0 lg:w-60">
           <form onSubmit={(e) => submitHandler(e)} className="w-full">
             {dayjs(tournamentData.lockInDate) > dayjs() ? (
               <>

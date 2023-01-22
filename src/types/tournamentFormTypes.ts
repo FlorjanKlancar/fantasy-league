@@ -20,5 +20,6 @@ export const TournamentFormSchema = z.object({
   tournamentType: z
     .number()
     .min(1, { message: "Please select Tournament Type!" }),
+  tournamentTicket: z.number().nullish(),
 });
 export type TournamentForm = z.infer<typeof TournamentFormSchema>;

@@ -1,7 +1,7 @@
 import React from "react";
 import { trpc } from "../../utils/trpc";
 import Select from "react-select";
-import { MultiValue } from "react-select/dist/declarations/src";
+import type { MultiValue } from "react-select/dist/declarations/src";
 import DropdownSkeleton from "../skeletons/DropdownSkeleton";
 import type {
   tournaments,
