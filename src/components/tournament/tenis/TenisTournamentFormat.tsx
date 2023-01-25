@@ -3,7 +3,7 @@ import Brackets from "./Brackets";
 import Example from "./PlayersMultiselect";
 
 type Props = {
-  setSubmitData: (data: unknown) => void;
+  setSubmitData?: (data: unknown) => void;
   tournamentId: string;
   userId: string;
 };

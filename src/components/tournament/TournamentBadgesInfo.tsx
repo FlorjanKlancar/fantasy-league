@@ -122,7 +122,7 @@ function TournamentBadgesInfo({ tournamentId, userId, submitData }: Props) {
 
   return (
     <div className="my-5 flex w-full flex-col items-center justify-between px-4 lg:my-8 lg:flex-row lg:px-0">
-      <div className="flex w-full flex-col space-y-5 sm:mb-8 sm:flex-row sm:space-y-0 sm:space-x-2 lg:mb-0">
+      <div className="flex w-full flex-col items-center space-y-5 sm:mb-8 sm:flex-row sm:space-y-0 sm:space-x-2 lg:mb-0">
         {badges.map((badge) => (
           <div
             key={badge.badgeValue}
@@ -139,13 +139,16 @@ function TournamentBadgesInfo({ tournamentId, userId, submitData }: Props) {
         ))}
       </div>
 
-      <div className="p-5">
+      <div className="hidden p-5 lg:block">
         <UserLabels tournamentId={tournamentId} />
       </div>
 
       {submitData && (
         <div className="mt-5 flex w-full sm:mt-0 lg:w-60">
-          <form onSubmit={(e) => submitHandler(e)} className="w-full">
+          <form
+            onSubmit={(e) => submitHandler(e)}
+            className="flex w-full justify-center"
+          >
             {dayjs(tournamentData.lockInDate) > dayjs() ? (
               <>
                 {userData?.userStatus === "Picking" ? (
@@ -174,7 +177,7 @@ function TournamentBadgesInfo({ tournamentId, userId, submitData }: Props) {
                   </button>
                 ) : (
                   <button
-                    className="btn flex w-full items-center gap-2 border-amber-800 bg-amber-600 text-white hover:bg-amber-700 "
+                    className="btn flex w-full items-center gap-2 border-amber-800 bg-amber-600 text-white hover:bg-amber-700"
                     type="button"
                     onClick={async () => {
                       const toastId = toast.loading("Unlocking...");
@@ -206,7 +209,7 @@ function TournamentBadgesInfo({ tournamentId, userId, submitData }: Props) {
               </>
             ) : (
               <button
-                className="btn flex items-center gap-2 border-none bg-green-600 text-white hover:bg-green-700 disabled:bg-green-900/50"
+                className="btn flex w-full items-center gap-2 border-none bg-green-600 text-white hover:bg-green-700 disabled:bg-green-900/50"
                 type="button"
                 disabled={true}
               >

@@ -59,6 +59,7 @@ export default function TournamentParticipants({ tournamentId }: Props) {
             ? `/tournament/${tournamentId}`
             : `/tournament/${tournamentId}/${participant.userId}`
         }
+        scroll={false}
         className={`block hover:bg-slate-900/50 ${
           (userId ? userId?.toString() : session?.user.id) ===
           participant.userId

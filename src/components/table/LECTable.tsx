@@ -75,7 +75,7 @@ function LECTable({ setSubmitData, tournamentId, userId }: Props) {
         id: userLecPrediction ? findTeam.id : i + 1,
 
         team: (
-          <div className="flex justify-center space-x-4 lg:justify-end">
+          <div className="flex w-full justify-center space-x-4">
             <div className="relative h-8 w-10 md:h-12 md:w-14">
               <Image
                 src={team.logo}
@@ -87,7 +87,7 @@ function LECTable({ setSubmitData, tournamentId, userId }: Props) {
               />
             </div>
 
-            <div className="flex w-12 items-center md:w-36 ">
+            <div className="flex w-12 items-center pl-2 md:w-36">
               <span>{team.name}</span>
             </div>
           </div>

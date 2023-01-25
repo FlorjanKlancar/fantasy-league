@@ -4,7 +4,6 @@ import { CSS } from "@dnd-kit/utilities";
 import { DragHandle } from "./DragHandle";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 import { trpc } from "../../utils/trpc";
-import { useSession } from "@supabase/auth-helpers-react";
 
 export const DraggableTableRow = ({
   row,

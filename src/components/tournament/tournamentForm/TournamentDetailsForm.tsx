@@ -175,6 +175,7 @@ function TournamentDetailsForm({ createNewTournament, isLoading }: Props) {
                   {...register("tournamentTicket", {
                     valueAsNumber: true,
                   })}
+                  placeholder="10€"
                 />
                 {errors.tournamentTicket ? (
                   <label className="label">

@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { TournamentLayout } from "../../../../components/layout/TournamentLayout";
 import LECTable from "../../../../components/table/LECTable";
+import LECHowToPlay from "../../../../components/tournament/LEC/LECHowToPlay";
 import TournamentParticipants from "../../../../components/tournament/TournamentParticipants";
 import TournamentPrizes from "../../../../components/tournament/TournamentPrizes";
 
@@ -17,11 +18,11 @@ function SpecificUserPicks() {
       userId={userId.toString()}
       tournamentId={tournamentId.toString()}
     >
-      <div className="grid auto-rows-fr grid-cols-1 px-4 md:grid-cols-2 md:gap-[100px] md:px-0">
-        <div className="flex flex-col">
+      <div className="grid grid-cols-1 gap-14 px-4 pt-5 lg:grid-cols-2 lg:gap-[100px] lg:px-0">
+        <div className="flex flex-col space-y-5">
           <TournamentParticipants tournamentId={tournamentId!.toString()} />
 
-          <TournamentPrizes />
+          <LECHowToPlay />
         </div>
 
         <LECTable
