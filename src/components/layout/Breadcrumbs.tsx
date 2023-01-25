@@ -2,6 +2,7 @@ import { ChevronRightIcon, HomeIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
+import BreadcrumbsSkeleton from "../skeletons/BreadcrumbsSkeleton";
 
 export default function Breadcrumbs() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function Breadcrumbs() {
       : "",
   });
 
-  if (!tournamentData || isLoading) return <div>Loading</div>;
+  if (!tournamentData || isLoading) return <BreadcrumbsSkeleton />;
 
   const checkIfPathIsEdit = (pathname: string) => {
     if (!pathname) return;
