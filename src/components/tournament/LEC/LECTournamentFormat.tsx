@@ -1,6 +1,6 @@
 import React from "react";
-import LECTable from "../table/LECTable";
-import TournamentParticipants from "./TournamentParticipants";
+import LECTable from "../../table/LECTable";
+import TournamentParticipants from "../TournamentParticipants";
 import { Raleway } from "@next/font/google";
 
 // If loading a variable font, you don't need to specify the font weight

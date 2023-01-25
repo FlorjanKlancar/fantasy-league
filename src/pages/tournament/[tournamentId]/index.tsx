@@ -13,8 +13,8 @@ import type {
 } from "@prisma/client";
 import { supabaseService } from "../../../utils/supabaseService";
 import { TournamentLayout } from "../../../components/layout/TournamentLayout";
-import LECTournamentFormat from "../../../components/tournament/LECTournamentFormat";
-import TenisTournamentFormat from "../../../components/tournament/TenisTournamentFormat";
+import LECTournamentFormat from "../../../components/tournament/LEC/LECTournamentFormat";
+import TenisTournamentFormat from "../../../components/tournament/tenis/TenisTournamentFormat";
 
 type Props = {
   session: Session;

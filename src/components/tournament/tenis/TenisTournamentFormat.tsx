@@ -1,4 +1,6 @@
 import React from "react";
+import Brackets from "./Brackets";
+import Example from "./PlayersMultiselect";
 
 type Props = {
   setSubmitData: (data: unknown) => void;
@@ -7,7 +9,12 @@ type Props = {
 };
 
 function TenisTournamentFormat({ setSubmitData, tournamentId, userId }: Props) {
-  return <div>TenisTournamentFormat</div>;
+  return (
+    <div>
+      Tenis
+      <Brackets />
+    </div>
+  );
 }
 
 export default TenisTournamentFormat;

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import TournamentHeader from "../tournament/TournamentHeader";
 import TournamentBadgesInfo from "../tournament/TournamentBadgesInfo";
-import Breadcrumbs from "../Breadcrumbs";
+import Breadcrumbs from "./Breadcrumbs";
 
 type DefaultLayoutProps = {
   children: ReactNode;
