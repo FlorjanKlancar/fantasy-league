@@ -17,7 +17,7 @@ function BreadcrumbsSkeleton() {
             />
             <span
               className={`skeleton_default_style ml-3 h-5 w-36 rounded`}
-            ></span>
+            />
           </div>
         </li>
       </ol>
