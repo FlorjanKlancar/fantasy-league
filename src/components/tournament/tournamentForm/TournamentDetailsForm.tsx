@@ -42,6 +42,8 @@ function TournamentDetailsForm({ createNewTournament, isLoading }: Props) {
       });
   };
 
+  console.log({ errors });
+
   return (
     <div className="md:grid md:grid-cols-2 ">
       <div className="md:col-span-1">
@@ -153,6 +155,31 @@ function TournamentDetailsForm({ createNewTournament, isLoading }: Props) {
                   <label className="label">
                     <span className="label-text-alt text-error">
                       {errors.tournamentEndDate.message}
+                    </span>
+                  </label>
+                ) : null}
+              </div>
+
+              <div className="form-control w-full ">
+                <label className="label">
+                  <span className="label-text font-bold capitalize text-white">
+                    Tournament Ticket
+                  </span>
+                  <span className="label-text text-xs">Optional</span>
+                </label>
+                <input
+                  type="number"
+                  className={`${
+                    errors.tournamentTicket ? "input-error" : "input-bordered"
+                  } input w-full placeholder:capitalize`}
+                  {...register("tournamentTicket", {
+                    valueAsNumber: true,
+                  })}
+                />
+                {errors.tournamentTicket ? (
+                  <label className="label">
+                    <span className="label-text-alt text-error">
+                      {errors.tournamentTicket.message}
                     </span>
                   </label>
                 ) : null}

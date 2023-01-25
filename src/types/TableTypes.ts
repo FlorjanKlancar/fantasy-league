@@ -5,6 +5,6 @@ export interface TableColumns {
 
 export interface TableLECData {
   id: number;
-  teamId: number;
+  teamId: bigint;
   teamName: string;
 }

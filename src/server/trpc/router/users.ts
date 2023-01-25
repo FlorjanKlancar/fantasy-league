@@ -46,6 +46,11 @@ export const usersRouter = router({
               include: { tournament_types: true },
             },
           },
+          orderBy: [
+            {
+              created_at: "desc",
+            },
+          ],
         });
 
         return response;
@@ -188,6 +193,22 @@ export const usersRouter = router({
             },
           ],
           take: 4,
+        });
+      } catch {
+        (e: unknown) => console.error(e);
+      }
+    }),
+
+  removeUserFromTournament: publicProcedure
+    .input(
+      z.object({
+        userOnTournamentId: z.bigint(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        return await ctx.prisma.users_on_tournament.delete({
+          where: { id: BigInt(input.userOnTournamentId) },
         });
       } catch {
         (e: unknown) => console.error(e);

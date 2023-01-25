@@ -1,17 +1,20 @@
 import { GetServerSidePropsContext } from "next";
 import React, { useState } from "react";
-import LECTable from "../../../components/table/LECTable";
-import TournamentHeader from "../../../components/tournament/TournamentHeader";
-import TournamentParticipants from "../../../components/tournament/TournamentParticipants";
-import TournamentPrizes from "../../../components/tournament/TournamentPrizes";
 import { createProxySSGHelpers } from "@trpc/react-query/ssg";
 import superjson from "superjson";
 import { appRouter } from "../../../server/trpc/router/_app";
 import { createContext } from "../../../server/trpc/context";
 import type { Session } from "@supabase/auth-helpers-nextjs";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { tournaments, users_on_tournament, user_data } from "@prisma/client";
+import type {
+  tournaments,
+  users_on_tournament,
+  user_data,
+} from "@prisma/client";
 import { supabaseService } from "../../../utils/supabaseService";
+import { TournamentLayout } from "../../../components/layout/TournamentLayout";
+import LECTournamentFormat from "../../../components/tournament/LEC/LECTournamentFormat";
+import TenisTournamentFormat from "../../../components/tournament/tenis/TenisTournamentFormat";
 
 type Props = {
   session: Session;
@@ -23,29 +26,45 @@ type Props = {
 };
 
 function TournamentView({ session, tournamentData }: Props) {
-  const [submitData, setSubmitData] = useState<unknown>();
+  const [submitData, setSubmitData] = useState<any>();
+
+  const renderTournamentType = (data: typeof tournamentData) => {
+    let renderComponent;
+    switch (Number(data.typeId)) {
+      case 1:
+        renderComponent = (
+          <LECTournamentFormat
+            tournamentId={data.id}
+            userId={session.user.id}
+            setSubmitData={setSubmitData}
+          />
+        );
+        break;
+      case 2:
+        renderComponent = (
+          <TenisTournamentFormat
+            tournamentId={data.id}
+            userId={session.user.id}
+            setSubmitData={setSubmitData}
+          />
+        );
+        break;
+      default:
+        renderComponent = <div>Tournament not supported yet</div>;
+        break;
+    }
+
+    return renderComponent;
+  };
 
   return (
-    <>
-      <TournamentHeader
-        tournamentId={tournamentData.id}
-        submitData={submitData}
-      />
-
-      <div className="grid auto-rows-fr grid-cols-1 px-4 lg:grid-cols-2 lg:gap-[100px] lg:px-0">
-        <div className="flex flex-col">
-          <TournamentParticipants tournamentId={tournamentData.id} />
-
-          <TournamentPrizes />
-        </div>
-
-        <LECTable
-          userId={session.user.id}
-          setSubmitData={setSubmitData}
-          tournamentId={tournamentData.id}
-        />
-      </div>
-    </>
+    <TournamentLayout
+      submitData={submitData}
+      userId={session.user.id}
+      tournamentId={tournamentData.id}
+    >
+      {renderTournamentType(tournamentData)}
+    </TournamentLayout>
   );
 }
 
@@ -114,6 +133,10 @@ export async function getServerSideProps(
             id: tournamentData?.id,
             typeId: Number(tournamentData?.typeId),
             users_on_tournament: serializeUserData,
+            tournament_types: {
+              ...tournamentData.tournament_types,
+              id: Number(tournamentData.tournament_types.id),
+            },
           })
         ),
         session: session,

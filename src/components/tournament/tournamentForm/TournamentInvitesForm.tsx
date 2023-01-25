@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
-import { MultiValue } from "react-select";
+import type { MultiValue } from "react-select";
 import UserDropdown from "../../user/UserDropdown";
 import InviteRecommendations from "./InviteRecommendations";
 

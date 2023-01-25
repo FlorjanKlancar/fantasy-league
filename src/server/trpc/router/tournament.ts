@@ -22,6 +22,7 @@ export const tournamentRouter = router({
             id: input?.tournamentId,
           },
           include: {
+            tournament_types: true,
             users_on_tournament: {
               include: {
                 user_data: true,
@@ -74,6 +75,7 @@ export const tournamentRouter = router({
             lockInDate: input.tournamentEndDate,
             typeId: input.tournamentType,
             tournamentOwner: input.tournamentOwnerId,
+            ticketPrice: input.tournamentTicket,
           },
         });
 
