@@ -24,6 +24,7 @@ const config = {
       "am-a.akamaihd.net",
       "cdn-icons-png.flaticon.com",
       "olecobyyqhwtozbupzvr.supabase.co",
+      "countryflagsapi.com",
     ],
   },
 };

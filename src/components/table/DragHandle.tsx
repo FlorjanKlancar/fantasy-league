@@ -8,7 +8,7 @@ const HandleWrapper = styled.div`
   display: inline-block;
   margin-right: 2px;
   float: left;
-  cursor: ${({ isDragging }: any) => (isDragging ? "grabbing" : "grab")};
+  cursor: ${({ isdragging }: any) => (isdragging ? "grabbing" : "grab")};
 `;
 
 export const DragHandle = (props: any) => {

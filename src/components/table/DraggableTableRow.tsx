@@ -31,6 +31,7 @@ export const DraggableTableRow = ({
 
   if (isLoading || !tournamentData) return <div>Loading</div>;
 
+
   return (
     <tr ref={setNodeRef} style={style} {...row.getRowProps()}>
       {isDragging ? (
@@ -59,8 +60,12 @@ export const DraggableTableRow = ({
               className={`rounded-none ${isUserLockedIn ? "bg-slate-900" : ""}`}
               key={i}
               {...cell.getCellProps()}
-              {...(!isUserLockedIn ? { ...attributes } : null)}
-              {...(!isUserLockedIn ? { ...listeners } : null)}
+              {...(!isUserLockedIn && Number(tournamentData.typeId) === 1
+                ? { ...attributes }
+                : null)}
+              {...(!isUserLockedIn && Number(tournamentData.typeId) === 1
+                ? { ...listeners }
+                : null)}
             >
               {cell.render("Cell")}
             </td>
