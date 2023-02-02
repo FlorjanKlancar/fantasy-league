@@ -31,7 +31,6 @@ export const DraggableTableRow = ({
 
   if (isLoading || !tournamentData) return <div>Loading</div>;
 
-  console.log(tournamentData.typeId);
 
   return (
     <tr ref={setNodeRef} style={style} {...row.getRowProps()}>
