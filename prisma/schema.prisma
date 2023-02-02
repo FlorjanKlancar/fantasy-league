@@ -318,6 +318,17 @@ model user_notifications {
   @@schema("public")
 }
 
+model tenis_players {
+  rank        Int     @id(map: "tenis_playerss_pkey") @db.SmallInt
+  name        String
+  country     String?
+  age         BigInt?
+  tournaments BigInt?
+  points      String?
+
+  @@schema("public")
+}
+
 enum aal_level {
   aal1
   aal2

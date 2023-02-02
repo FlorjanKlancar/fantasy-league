@@ -3,7 +3,7 @@ import {
   XCircleIcon,
   EnvelopeOpenIcon,
 } from "@heroicons/react/24/outline";
-import {
+import type {
   tournaments,
   tournament_types,
   users_on_tournament,
@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Dayjs } from "dayjs";
+import type { Dayjs } from "dayjs";
 import { trpc } from "../../utils/trpc";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";

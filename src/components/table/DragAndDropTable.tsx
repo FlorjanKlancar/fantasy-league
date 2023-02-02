@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   closestCenter,
   DndContext,
@@ -19,6 +19,7 @@ import { useTable } from "react-table";
 import { DraggableTableRow } from "./DraggableTableRow";
 import { StaticTableRow } from "./StaticTableRow";
 import type { TableColumns, TableLECData } from "../../types/TableTypes";
+import autoAnimate from "@formkit/auto-animate";
 
 type Props = {
   columns: TableColumns[];
@@ -84,6 +85,11 @@ export default function DragAndDropTable({
     return row;
   }, [activeId, rows, prepareRow]);
 
+  const parent = useRef(null);
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
+
   // Render the UI for your table
   return (
     <DndContext
@@ -122,6 +128,7 @@ export default function DragAndDropTable({
           <tbody
             {...getTableBodyProps()}
             className="text-center text-base md:text-xl"
+            ref={parent}
           >
             <SortableContext
               items={items}
