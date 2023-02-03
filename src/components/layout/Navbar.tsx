@@ -73,7 +73,7 @@ function Navbar() {
                 {session && (
                   <>
                     <div className="mr-5">
-                      <Link href="/new-tournament">
+                      <Link href="/tournament/new">
                         <button className="btn-sm btn bg-secondary text-white hover:bg-secondary/60">
                           New tournament
                         </button>

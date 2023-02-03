@@ -1,8 +1,8 @@
 import { useSession } from "@supabase/auth-helpers-react";
 import Head from "next/head";
 import React from "react";
-import PageMainHeader from "../../components/layout/PageMainHeader";
-import NewTournamentForm from "../../components/tournament/tournamentForm/NewTournamentForm";
+import PageMainHeader from "../../../components/layout/PageMainHeader";
+import NewTournamentForm from "../../../components/tournament/tournamentForm/NewTournamentForm";
 
 function NewTournamentPage() {
   const session = useSession();

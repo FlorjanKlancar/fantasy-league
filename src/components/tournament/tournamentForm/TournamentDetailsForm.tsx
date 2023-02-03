@@ -167,13 +167,13 @@ function TournamentDetailsForm({ createNewTournament, isLoading }: Props) {
                 </label>
                 <input
                   type="number"
+                  {...register("tournamentTicket", {
+                    setValueAs: (v) => (v === "" ? undefined : parseInt(v, 10)),
+                  })}
                   className={`${
                     errors.tournamentTicket ? "input-error" : "input-bordered"
                   } input w-full placeholder:capitalize`}
-                  {...register("tournamentTicket", {
-                    valueAsNumber: true,
-                  })}
-                  placeholder="10€"
+                  placeholder="Enter the ticket price amount"
                 />
                 {errors.tournamentTicket ? (
                   <label className="label">
