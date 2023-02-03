@@ -67,7 +67,7 @@ function TenisTournamentFormat({ setSubmitData, tournamentId, userId }: Props) {
         player: (
           <div className="ml-8 flex items-center space-x-3">
             <Image
-              src={player.country!}
+              src={player.country}
               alt="Country Img"
               width={40}
               height={35}

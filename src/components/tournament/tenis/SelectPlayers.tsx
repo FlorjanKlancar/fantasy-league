@@ -1,4 +1,4 @@
-import { Fragment, MutableRefObject, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { trpc } from "../../../utils/trpc";
@@ -6,6 +6,7 @@ import Image from "next/image";
 import { tenis_players } from "@prisma/client";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { DropdownPlayersType } from "../../../types/DropdownPlayersType";
+import { generateFlagURL } from "../../../utils/variables";
 
 type Props = {
   selectPlayersHandler: (
@@ -19,7 +20,7 @@ const dropdownPlayerTransformer = (playersData: tenis_players[]) => {
   return playersData.map((player: tenis_players) => {
     return {
       id: player.rank,
-      country: `https://countryflagsapi.com/png/${player.country?.toLocaleLowerCase()}`,
+      country: generateFlagURL(player.country?.toLocaleLowerCase()),
       name: player.name,
     };
   });
@@ -83,16 +84,7 @@ export default function SelectPlayers({
       .ilike("name", `%${searchString}%`)
       .limit(20);
 
-    if (data)
-      setDropdownPlayers(
-        data.map((player: tenis_players) => {
-          return {
-            id: player.rank,
-            country: `https://countryflagsapi.com/png/${player.country?.toLocaleLowerCase()}`,
-            name: player.name,
-          };
-        })
-      );
+    if (data) setDropdownPlayers(dropdownPlayerTransformer(data));
     else setDropdownPlayers([]);
 
     setIsLoadingDropdown(false);

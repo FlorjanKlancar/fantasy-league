@@ -115,7 +115,7 @@ export const tournamentRouter = router({
           },
         });
 
-        await ctx.prisma.users_LEC_predictions.deleteMany({
+        await ctx.prisma.user_predictions.deleteMany({
           where: {
             tournamentId: input.tournamentId,
           },

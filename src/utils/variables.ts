@@ -5,3 +5,6 @@ export function toJson(data: unknown) {
     typeof v === "bigint" ? `${v}n` : v
   ).replace(/"(-?\d+)n"/g, (_, a) => a);
 }
+
+export const generateFlagURL = (countryCode: string) =>
+  `https://countryflagsapi.com/png/${countryCode}`;
