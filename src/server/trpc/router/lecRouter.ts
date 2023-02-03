@@ -38,7 +38,7 @@ export const lecRouter = router({
       try {
         if (dayjs(input.tournamentLockInDate) < dayjs()) return;
 
-        return await ctx.prisma.users_LEC_predictions.upsert({
+        return await ctx.prisma.user_predictions.upsert({
           where: { id: input.predictionId ? input.predictionId : 0 },
           update: {
             prediction: toJson(input.predictions),
@@ -65,7 +65,7 @@ export const lecRouter = router({
       if (!input.userId || !input.tournamentId) return;
 
       try {
-        return await ctx.prisma.users_LEC_predictions.findFirst({
+        return await ctx.prisma.user_predictions.findFirst({
           where: { userId: input.userId, tournamentId: input.tournamentId },
         });
       } catch (e: unknown) {

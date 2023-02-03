@@ -5,6 +5,7 @@ import { trpc } from "../../../utils/trpc";
 import Image from "next/image";
 import { tenis_players } from "@prisma/client";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { DropdownPlayersType } from "../../../types/DropdownPlayersType";
 
 type Props = {
   selectPlayersHandler: (
@@ -12,12 +13,6 @@ type Props = {
     player: DropdownPlayersType
   ) => void;
   selectedList: DropdownPlayersType[];
-};
-
-type DropdownPlayersType = {
-  id: number;
-  country: string;
-  name: string;
 };
 
 const dropdownPlayerTransformer = (playersData: tenis_players[]) => {
